@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "paths": {
+      "three/addons/controls/*": ["./node_modules/@types/three/examples/jsm/controls/*"],
+    },
+    "strict": true,
+  },
+  "include": ["src/**/*.ts", "index.d.ts"],
+}

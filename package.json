@@ -1,0 +1,30 @@
+{
+  "name": "nolle-surfers",
+  "version": "0.1.0",
+  "description": "spel för mottagningen",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode=development",
+    "bundle": "webpack --mode=production",
+    "watch": "webpack --mode=development --watch",
+    "server": "webpack serve"
+  },
+  "author": "Eskil Queseth",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "double-ended-queue": "^2.1.0-0",
+    "three": "^0.165.0"
+  },
+  "devDependencies": {
+    "@types/double-ended-queue": "^2.1.7",
+    "@types/three": "^0.165.0",
+    "html-webpack-plugin": "^5.6.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.5.2",
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
+  },
+  "sideEffects": false
+}
