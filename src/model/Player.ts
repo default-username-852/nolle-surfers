@@ -1,28 +1,33 @@
 import { Lane } from './Lane';
 
-export default class Player {
-    height: number;
-    velY: number;
-    lane: Lane;
+const GRAVITY: number = 9.82;
 
-    constructor(x: number, y: number, z: number) {
-        this.height = 0;
-        this.velY = 0;
-        this.lane = Lane.Center;
+export default class Player {
+    height: number = 0;
+    velY: number = 0;
+    lane: Lane = Lane.Center;
+    onGround: boolean = true;
+    // TODO: add jump queueing and air jumping
+
+    constructor() {
     }
 
     update(delta: number, groundHeight: number) {
         this.height += this.velY * delta;
-        this.velY -= 4 * delta;
+        this.velY -= GRAVITY * delta;
 
         // runner hit the ground
         if (this.height < groundHeight) {
             this.height = groundHeight;
             this.velY = 0;
+            this.onGround = true;
         }
     }
 
     jump() {
-        this.velY = 4;
+        if (this.onGround) {
+            this.velY = 6;
+            this.onGround = false;
+        }
     }
 }

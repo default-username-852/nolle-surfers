@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as THREE from 'three';
 import GravelTexture from "../../assets/gravel.png";
-import { Canvas, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Game } from '../model/Game';
 import PlayerView from './PlayerView';
 import { TerrainView } from './TerrainView';
@@ -16,7 +16,7 @@ grassTexture.repeat.set(3,15);
 
 export default function GameView({ game }: { game: Game }): React.JSX.Element {
     return (
-    <Canvas scene={{background: new THREE.Color(0x000000)}} camera={{position: [0,4,-3]}}>
+    <Canvas scene={{background: new THREE.Color(0x000000)}} camera={{position: [0,4,-2.5]}}>
         <React.StrictMode>
             <GameInner game={game}/>
         </React.StrictMode>
@@ -31,8 +31,12 @@ function GameInner({game}: {game: Game}): React.JSX.Element {
     const camera = useThree(s => s.camera);
 
     React.useEffect(() => {
-        camera.lookAt(new THREE.Vector3(0,0,5));
+        camera.lookAt(new THREE.Vector3(0,0,6));
     }, []);
+
+    useFrame(({camera}, delta) => {
+        camera.position.y = THREE.MathUtils.damp(camera.position.y, game.groundHeight() + 4, 2, delta);
+    });
 
     const terrains: Array<React.JSX.Element> = [];
 

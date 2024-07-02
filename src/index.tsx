@@ -5,6 +5,8 @@ import { Game } from './model/Game';
 import { proxy } from 'valtio';
 import * as Stats from 'stats.js';
 
+// TODO: add support for swipe gestures
+
 let stats = new Stats();
 document.body.appendChild(stats.dom);
 requestAnimationFrame(function loop() {

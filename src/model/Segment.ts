@@ -19,6 +19,7 @@ export class Segment {
     }
 }
 
+// TODO: add more segments
 export const segments = [
     new Segment([
         new Terrain(TerrainType.Wagon, 0), new Terrain(TerrainType.Wagon, 10), new Terrain(TerrainType.Wagon, 25)
