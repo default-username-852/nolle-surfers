@@ -1,13 +1,13 @@
 import * as THREE from 'three';
 import { Lane, laneToOffset } from './Lane';
-import MetalTexture from '../assets/metal.png';
+import MetalTexture from '../../assets/metal.png';
 
 export enum TerrainType {
     Ramp,
     Wagon,
 }
 
-const ramp = new THREE.Group();
+/*const ramp = new THREE.Group();
 
 const metalTexture = new THREE.TextureLoader().load(MetalTexture);
 
@@ -22,17 +22,16 @@ const plane = new THREE.Mesh(new THREE.PlaneGeometry(1.8, Math.sqrt(10*10+4*4)),
 plane.rotateX(Math.atan(10/4));
 
 ramp.add(plane);
-
+*/
 export class Terrain {
     type: TerrainType;
     offset: number;
-    mesh: THREE.Object3D;
 
-    constructor(scene: THREE.Object3D, type: TerrainType, lane: Lane, offset: number) {
+    constructor(type: TerrainType, lane: Lane, offset: number) {
         this.type = type;
         this.offset = offset;
 
-        switch(type) {
+        /*switch(type) {
             case TerrainType.Ramp:
                 this.mesh = ramp.clone(true);
                 break;
@@ -40,18 +39,17 @@ export class Terrain {
                 const geometry = new THREE.BoxGeometry(1.8,4,10);
                 this.mesh = new THREE.Mesh(geometry, material);
                 break;
-        }
+        }*/
 
-        this.mesh.position.x = laneToOffset(lane);
+        /*this.mesh.position.x = laneToOffset(lane);
         this.mesh.position.y = 2;
         this.mesh.position.z = offset;
-        scene.add(this.mesh);
+        scene.add(this.mesh);*/
     }
 
-    update(delta: number) {
-        // TODO: run speed
-        this.offset -= delta;
-        this.mesh.position.z = this.offset;
+    update(delta: number, gameSpeed: number) {
+        this.offset -= delta * gameSpeed;
+        //this.mesh.position.z = this.offset;
     }
 
     /// returns the interval of z coordinates that this terrain piece is valid for
@@ -71,7 +69,7 @@ export class Terrain {
     }
 
     remove() {
-        this.mesh.parent?.remove(this.mesh);
+        //this.mesh.parent?.remove(this.mesh);
         //this.mesh.geometry.dispose();
     }
 }
