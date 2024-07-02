@@ -40,7 +40,7 @@ function GameInner({game}: {game: Game}): React.JSX.Element {
     for(let l of [Lane.Left, Lane.Center, Lane.Right]) {
         const ts = snap.terrain[l];
         for(let t of ts.toArray()) { // grr performance perhaps
-            terrains.push(<TerrainView terrain={t} lane={l} key={l}/>)
+            terrains.push(<TerrainView terrain={t} lane={l} key={t.uuid}/>)
             count++;
         }
     }

@@ -25,20 +25,20 @@ export function TerrainView({terrain, lane}: {terrain: Terrain, lane: Lane}): Re
 
     useFrame((s, delta) => {
         if(meshRef.current) {
-            meshRef.current.position.z = terrain.offset;
+            meshRef.current.position.z = terrain.offset + 5;
         }
     });
 
     if (terrain.type == TerrainType.Wagon) {
         return (
-            <mesh position={[laneToOffset(lane), 2, terrain.offset]} ref={meshRef}>
+            <mesh position={[laneToOffset(lane), 2, terrain.offset + 5]} ref={meshRef}>
                 <boxGeometry args={[1.8,4,10]}/>
                 <meshStandardMaterial map={metalTexture} side={THREE.DoubleSide}/>
             </mesh>
         );
     } else if (terrain.type == TerrainType.Ramp) {
         return (
-            <mesh rotation={[Math.atan(10/4)+Math.PI,0,0]} position={[laneToOffset(lane), 2, terrain.offset]} ref={meshRef}>
+            <mesh rotation={[Math.atan(10/4)+Math.PI,0,0]} position={[laneToOffset(lane), 2, terrain.offset + 5]} ref={meshRef}>
                 <meshStandardMaterial map={metalTexture}/>
                 <planeGeometry args={[1.8, Math.sqrt(10*10+4*4)]}/>
             </mesh>
