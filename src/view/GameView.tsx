@@ -5,7 +5,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Game } from '../model/Game';
 import PlayerView from './PlayerView';
 import { TerrainView } from './TerrainView';
-import { Lane } from '../model/Lane';
+import { Lane, laneToOffset } from '../model/Lane';
 import { useSnapshot } from 'valtio';
 
 const grassTexture = new THREE.TextureLoader().load(GravelTexture);
@@ -36,6 +36,7 @@ function GameInner({game}: {game: Game}): React.JSX.Element {
 
     useFrame(({camera}, delta) => {
         camera.position.y = THREE.MathUtils.damp(camera.position.y, game.groundHeight() + 4, 2, delta);
+        camera.position.x = THREE.MathUtils.damp(camera.position.x, laneToOffset(game.player.lane) * 0.8, 5, delta);
     });
 
     const terrains: Array<React.JSX.Element> = [];
