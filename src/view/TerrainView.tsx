@@ -3,7 +3,7 @@ import { Terrain, TerrainType } from "../model/Terrain";
 import * as THREE from "three";
 import MetalTexture from "../../assets/metal.png";
 import { Lane, laneToOffset } from "../model/Lane";
-import { GroupProps, useFrame } from "@react-three/fiber";
+import { GroupProps } from "@react-three/fiber";
 
 const metalTexture = new THREE.TextureLoader().load(MetalTexture);
 
@@ -22,12 +22,6 @@ function Ramp(props: GroupProps): React.JSX.Element {
 
 export function TerrainView({terrain, lane}: {terrain: Terrain, lane: Lane}): React.JSX.Element {
     const meshRef = React.useRef<THREE.Mesh & THREE.Group>(null);
-
-    useFrame((s, delta) => {
-        if(meshRef.current) {
-            meshRef.current.position.z = terrain.offset + 5;
-        }
-    });
 
     if (terrain.type == TerrainType.Wagon) {
         return (

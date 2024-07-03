@@ -55,11 +55,11 @@ function GameInner({game}: {game: Game}): React.JSX.Element {
         <ambientLight intensity={Math.PI / 2} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-        <mesh rotation={[Math.PI/2, 0, 0]}>
-            <planeGeometry args={[6, 30]} />
+        <mesh rotation={[Math.PI/2, 0, 0]} position={[0,0,23]}>
+            <planeGeometry args={[6, 50]} />
             <meshStandardMaterial map={grassTexture} side={THREE.DoubleSide} />
         </mesh>
-        <PlayerView player={game.player}/>
+        <PlayerView player={snap.player}/>
         {terrains}
     </>
     )

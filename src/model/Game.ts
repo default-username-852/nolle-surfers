@@ -3,6 +3,7 @@ import Player from "./Player";
 import { Lane, laneToOffset } from "./Lane";
 import * as Deque from "double-ended-queue";
 import { segments } from "./Segment";
+import { proxy } from "valtio";
 
 const INCREASE_SPEED_RATE: number = 0.01;
 
@@ -47,7 +48,7 @@ export class Game {
             }
         }
 
-        if(this.generatedFrontier <= 10) {
+        if(this.generatedFrontier <= 100) {
             this.generateNewSegment();
         }
 
@@ -90,7 +91,7 @@ export class Game {
             for(const t of ts) {
                 let newT = t.clone();
                 newT.offset += this.generatedFrontier;
-                this.terrain[l].insertBack(newT);
+                this.terrain[l].insertBack(proxy(newT));
             }
         }
 
