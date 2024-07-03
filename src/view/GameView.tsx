@@ -24,7 +24,7 @@ export default function GameView({ game }: { game: Game }): React.JSX.Element {
     </Canvas>
     <p style={{color: "white", position: "absolute", top: 10, left: "50%", transform: "translate(-50%, -50%)", fontFamily: "monospace"}}>
         {Math.floor(snap.score)} points
-        </p>
+    </p>
     </>)
 }
 
@@ -38,8 +38,19 @@ function GameInner({game}: {game: Game}): React.JSX.Element {
         camera.lookAt(new THREE.Vector3(0,0,6));
     }, []);
 
+    const cameraFloatTime = React.useRef(0);
     useFrame(({camera}, delta) => {
-        camera.position.y = THREE.MathUtils.damp(camera.position.y, game.groundHeight() + 4, 2, delta);
+        const newCameraPos = game.groundHeight() + 4;
+        if (camera.position.y < newCameraPos) {
+            cameraFloatTime.current = 0.5;
+        }
+
+        if (cameraFloatTime.current > 0 && camera.position.y > newCameraPos) {
+            cameraFloatTime.current = Math.max(cameraFloatTime.current - delta, 0);
+        } else {
+            camera.position.y = THREE.MathUtils.damp(camera.position.y, game.groundHeight() + 4, 2, delta);
+        }
+
         camera.position.x = THREE.MathUtils.damp(camera.position.x, laneToOffset(game.player.lane) * 0.8, 5, delta);
     });
 
