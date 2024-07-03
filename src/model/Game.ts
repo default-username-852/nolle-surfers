@@ -32,6 +32,8 @@ export class Game {
 
         const worldOffset = this.gameSpeed * delta;
 
+        this.score += worldOffset;
+
         this.generatedFrontier -= worldOffset;
 
         for(const [_, l] of Object.entries(this.terrain)) {

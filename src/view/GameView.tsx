@@ -15,13 +15,17 @@ grassTexture.wrapT = THREE.RepeatWrapping;
 grassTexture.repeat.set(3,15);
 
 export default function GameView({ game }: { game: Game }): React.JSX.Element {
-    return (
+    const snap = useSnapshot(game);
+    return (<>
     <Canvas scene={{background: new THREE.Color(0x000000)}} camera={{position: [0,4,-2.5]}}>
         <React.StrictMode>
             <GameInner game={game}/>
         </React.StrictMode>
     </Canvas>
-    )
+    <p style={{color: "white", position: "absolute", top: 10, left: "50%", transform: "translate(-50%, -50%)", fontFamily: "monospace"}}>
+        {Math.floor(snap.score)} points
+        </p>
+    </>)
 }
 
 

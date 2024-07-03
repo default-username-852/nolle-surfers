@@ -16,7 +16,6 @@ requestAnimationFrame(function loop() {
 
 const game = proxy(new Game());
 
-let root = document.getElementById('root');
 document.addEventListener('keydown', (event) => {
     game.keyboardEvent(event as KeyboardEvent);
 });
@@ -33,6 +32,7 @@ function gameLoop(time: DOMHighResTimeStamp) {
 
 window.requestAnimationFrame(gameLoop);
 
+let root = document.getElementById('root');
 if (root) {
     createRoot(root).render(
         <React.StrictMode>
