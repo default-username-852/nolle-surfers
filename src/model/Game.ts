@@ -1,6 +1,6 @@
-import { Terrain, TerrainType } from "./Terrain";
+import { Terrain } from "./Terrain";
 import Player from "./Player";
-import { Lane, laneToOffset } from "./Lane";
+import { Lane } from "./Lane";
 import * as Deque from "double-ended-queue";
 import { segments } from "./Segment";
 import { proxy } from "valtio";
@@ -8,11 +8,35 @@ import { proxy } from "valtio";
 const INCREASE_SPEED_RATE: number = 0.01;
 
 export class Game {
+    currentInstance: GameInstance = new GameInstance();
+    bestScore: number = this.currentInstance.score;
+
+    restartGame() {
+        this.bestScore = this.currentInstance.score;
+        this.currentInstance = new GameInstance();
+    }
+
+    update(delta: number) {
+        this.currentInstance.update(delta);
+    }
+
+	keyboardEvent(event: KeyboardEvent) {
+        switch (event.code) {
+            case "Space":
+                this.restartGame();
+                return;
+        }
+        this.currentInstance.keyboardEvent(event);
+	}
+}
+
+export class GameInstance {
     player: Player;
     terrain: { [key in Lane]: Deque<Terrain> }; // invariant: each deque is non-decreasing w.r.t. the offset value
     score: number = 0;
     gameSpeed: number = 2.5;
-    generatedFrontier: number = 10; // represents how many units forward has been generatedequed
+    generatedFrontier: number = 10; // represents how many units forward has been generated
+    gameOver: boolean = false;
 
     constructor () {
         this.player = new Player();
@@ -28,6 +52,10 @@ export class Game {
     }
 
     update(delta: number) {
+        if (this.gameOver) {
+            return;
+        }
+
         this.gameSpeed += delta * INCREASE_SPEED_RATE;
 
         const worldOffset = this.gameSpeed * delta;
@@ -55,6 +83,12 @@ export class Game {
         }
 
         let groundHeight = this.groundHeight();
+
+        if(groundHeight - 0.1 >= this.player.height) {
+            this.update(-delta);
+            this.gameOver = true;
+            return;
+        }
 
         this.player.update(delta, groundHeight);
     }
@@ -126,6 +160,10 @@ export class Game {
     }
 
 	keyboardEvent(event: KeyboardEvent) {
+        if (this.gameOver) {
+            return;
+        }
+
         switch (event.code) {
             case "ArrowUp":
                 this.player.jump();

@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import * as React from 'react';
 import GameView from './view/GameView';
-import { Game } from './model/Game';
+import { Game, GameInstance } from './model/Game';
 import { proxy } from 'valtio';
 import * as Stats from 'stats.js';
 

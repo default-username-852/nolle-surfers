@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as THREE from 'three';
 import GravelTexture from "../../assets/gravel.png";
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Game } from '../model/Game';
+import { Game, GameInstance } from '../model/Game';
 import PlayerView from './PlayerView';
 import { TerrainView } from './TerrainView';
 import { Lane, laneToOffset } from '../model/Lane';
@@ -14,23 +14,35 @@ grassTexture.wrapS = THREE.RepeatWrapping;
 grassTexture.wrapT = THREE.RepeatWrapping;
 grassTexture.repeat.set(3,15);
 
+function GGDiv({game}: {game: GameInstance}): React.JSX.Element {
+    return (<div style={{position: "absolute", left: 0, top: 0, width: "100%", height: "100%", background: "rgba(0,0,0,.4)"}}>
+        <div style={{color: "white", position: "absolute", top: "33%", left: "50%", transform: "translate(-50%, -50%)"}}>
+            <h1 style={{fontFamily: "monospace"}}>Game over!</h1>
+            <p style={{fontFamily: "monospace"}}>
+                Final score: {Math.floor(game.score)}<br/>
+                Press Space to restart
+            </p>
+        </div>
+    </div>)
+}
+
 export default function GameView({ game }: { game: Game }): React.JSX.Element {
-    const snap = useSnapshot(game);
+    const snap = useSnapshot(game).currentInstance;
     return (<>
     <Canvas scene={{background: new THREE.Color(0x000000)}} camera={{position: [0,4,-2.5]}}>
         <React.StrictMode>
-            <GameInner game={game}/>
+            <GameInner game={snap}/>
         </React.StrictMode>
     </Canvas>
-    <p style={{color: "white", position: "absolute", top: 10, left: "50%", transform: "translate(-50%, -50%)", fontFamily: "monospace"}}>
+    {snap.gameOver ? <GGDiv game={snap}/> : <p style={{color: "white", position: "absolute", top: 10, left: "50%", transform: "translate(-50%, -50%)", fontFamily: "monospace"}}>
         {Math.floor(snap.score)} points
-    </p>
+    </p>}
     </>)
 }
 
 
-function GameInner({game}: {game: Game}): React.JSX.Element {
-    const snap = useSnapshot(game);
+function GameInner({game}: {game: GameInstance}): React.JSX.Element {
+    //const snap = useSnapshot(game);
 
     const camera = useThree(s => s.camera);
 
@@ -58,7 +70,7 @@ function GameInner({game}: {game: Game}): React.JSX.Element {
 
     let count = 0;
     for(let l of [Lane.Left, Lane.Center, Lane.Right]) {
-        const ts = snap.terrain[l];
+        const ts = game.terrain[l];
         for(let t of ts.toArray()) { // grr performance perhaps
             terrains.push(<TerrainView terrain={t} lane={l} key={t.uuid}/>)
             count++;
@@ -74,7 +86,7 @@ function GameInner({game}: {game: Game}): React.JSX.Element {
             <planeGeometry args={[6, 50]} />
             <meshStandardMaterial map={grassTexture} side={THREE.DoubleSide} />
         </mesh>
-        <PlayerView player={snap.player}/>
+        <PlayerView player={game.player}/>
         {terrains}
     </>
     )
