@@ -1,15 +1,15 @@
 import { Terrain } from "./Terrain";
 import Player from "./Player";
 import { Lane } from "./Lane";
-import * as Deque from "double-ended-queue";
 import { segments } from "./Segment";
 import { proxy } from "valtio";
+import { TerrainManager } from "./TerrainManager";
 
 const INCREASE_SPEED_RATE: number = 0.01;
 
 export class Game {
     currentInstance: GameInstance = new GameInstance();
-    bestScore: number = this.currentInstance.score;
+    bestScore: number | undefined = undefined;
 
     restartGame() {
         this.bestScore = this.currentInstance.score;
@@ -32,7 +32,7 @@ export class Game {
 
 export class GameInstance {
     player: Player;
-    terrain: { [key in Lane]: Deque<Terrain> }; // invariant: each deque is non-decreasing w.r.t. the offset value
+    terrainManager = new TerrainManager();
     score: number = 0;
     gameSpeed: number = 2.5;
     generatedFrontier: number = 10; // represents how many units forward has been generated
@@ -40,15 +40,6 @@ export class GameInstance {
 
     constructor () {
         this.player = new Player();
-
-        this.terrain = {
-            [Lane.Left]: new Deque([
-            ]),
-            [Lane.Center]: new Deque([
-            ]),
-            [Lane.Right]: new Deque([
-            ]),
-        };
     }
 
     update(delta: number) {
@@ -64,21 +55,9 @@ export class GameInstance {
 
         this.generatedFrontier -= worldOffset;
 
-        for(const [_, l] of Object.entries(this.terrain)) {
-            for(const t of l.toArray()) { // grr performance perhaps
-                t.update(worldOffset);
-            }
+        this.terrainManager.update(worldOffset);
 
-            while(true) {
-                const front = l.peekFront();
-                if (!front || front.offset > -11) {
-                    break;
-                }
-                l.removeFront();
-            }
-        }
-
-        if(this.generatedFrontier <= 100) {
+        if(this.generatedFrontier <= 30) {
             this.generateNewSegment();
         }
 
@@ -94,25 +73,7 @@ export class GameInstance {
     }
 
     terrainInLane(lane: Lane): Terrain | undefined {
-        const terrainInLane = this.terrain[lane];
-        let idx = 0;
-        while(true) {
-            const obstacle = terrainInLane.get(idx);
-            if (!obstacle) {
-                break;
-            }
-
-            const [lower, upper] = obstacle.bounds();
-            if (lower <= 0 && upper >= 0) {
-                return obstacle;
-            } else if (lower > 0) { // still haven't reached this obstacle
-                break;
-            }
-
-            idx++;
-        }
-
-        return undefined;
+        return this.terrainManager.terrainAt0(lane);
     }
 
     groundHeight(): number {
@@ -127,7 +88,7 @@ export class GameInstance {
             for(const t of ts) {
                 let newT = t.clone();
                 newT.offset += this.generatedFrontier;
-                this.terrain[l].insertBack(proxy(newT));
+                this.terrainManager.addTerrain(newT, l);
             }
         }
 

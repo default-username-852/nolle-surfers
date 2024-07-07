@@ -14,17 +14,17 @@ requestAnimationFrame(function loop() {
 	requestAnimationFrame(loop);
 });
 
-const game = proxy(new Game());
+export const gameState = proxy(new Game());
 
 document.addEventListener('keydown', (event) => {
-    game.keyboardEvent(event as KeyboardEvent);
+    gameState.keyboardEvent(event as KeyboardEvent);
 });
 
 let lastTime = 0;
 // delta is in milliseconds
 function gameLoop(time: DOMHighResTimeStamp) {
 	const delta = time - lastTime;
-	game.update(delta / 1000);
+	gameState.update(delta / 1000);
 
 	lastTime = time;
 	window.requestAnimationFrame(gameLoop);
@@ -36,7 +36,7 @@ let root = document.getElementById('root');
 if (root) {
     createRoot(root).render(
         <React.StrictMode>
-            <GameView game={game}/>
+            <GameView/>
         </React.StrictMode>
     )
 }
