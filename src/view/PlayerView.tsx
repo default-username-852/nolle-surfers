@@ -14,6 +14,7 @@ export default function PlayerView(): React.JSX.Element {
             const player = gameState.currentInstance.player;
             meshRef.current.position.x = THREE.MathUtils.damp(meshRef.current.position.x, laneToOffset(player.lane), 10, delta);
             xPos.current = meshRef.current.position.x;
+            meshRef.current.position.y = player.height;
         }
     })
 

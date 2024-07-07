@@ -12,7 +12,7 @@ export class Game {
     bestScore: number | undefined = undefined;
 
     restartGame() {
-        this.bestScore = this.currentInstance.score;
+        this.bestScore = Math.max(this.currentInstance.score, this.bestScore || 0);
         this.currentInstance = new GameInstance();
     }
 

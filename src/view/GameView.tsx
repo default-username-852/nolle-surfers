@@ -30,7 +30,7 @@ function GGDiv(): React.JSX.Element {
 }
 
 export default function GameView(): React.JSX.Element {
-    const snap = useSnapshot(gameState.currentInstance);
+    const snap = useSnapshot(gameState).currentInstance;
 
     return (<>
     <Canvas scene={{background: new THREE.Color(0x000000)}} camera={{position: [0,4,-2.5]}}>

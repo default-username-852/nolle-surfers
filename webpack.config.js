@@ -13,7 +13,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        test: /\.(png|svg|jpg|jpeg|gif|glb)$/i,
         type: 'asset/resource',
       },
     ],
@@ -26,7 +26,7 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.js', '.tsx'],
+    extensions: ['.ts', '.js', '.tsx', '.glb'],
   },
   output: {
     filename: 'main.js',
