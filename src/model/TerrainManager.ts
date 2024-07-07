@@ -26,7 +26,7 @@ export class TerrainManager {
 
             while(true) {
                 const front = l.peekFront();
-                if (!front || front.offset > -11) {
+                if (!front || front.bounds()[1] > -5) {
                     break;
                 }
                 const removed = l.removeFront();

@@ -33,9 +33,9 @@ export const TerrainView = React.memo(({lane, terrainId}: {lane: Lane, terrainId
 
     useFrame((s, delta) => {
         if(meshRef.current) {
-            console.log(terrain.offset);
+            const [lower, upper] = terrain.bounds();
             meshRef.current.position.x = laneToOffset(lane);
-            meshRef.current.position.z = terrain.offset + 5;
+            meshRef.current.position.z = (lower + upper) / 2;
         }
     });
 

@@ -22,7 +22,12 @@ export class Terrain {
 
     /// returns the interval of z coordinates that this terrain piece is valid for
     bounds(): [number, number] {
-        return [this.offset, this.offset + 10];
+        switch(this.type) {
+            case TerrainType.Ramp:
+                return [this.offset, this.offset + 10];
+            case TerrainType.Wagon:
+                return [this.offset, this.offset + 20];
+        }
     }
 
     /// returns the height of the ground at position 0
