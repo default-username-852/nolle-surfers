@@ -36,16 +36,13 @@ export const TerrainView = React.memo(({lane, terrainId}: {lane: Lane, terrainId
             const [lower, upper] = terrain.bounds();
             meshRef.current.position.x = laneToOffset(lane);
             meshRef.current.position.z = (lower + upper) / 2;
+            meshRef.current.visible = terrain.offset <= 40;
         }
     });
 
     if ( terrain.type == TerrainType.Wagon) {
         return (
             <Train ref={meshRef}/>
-            /*<mesh position={[laneToOffset(lane), 2, terrain.offset + 5]} ref={meshRef}>
-                <boxGeometry args={[1.8,4,10]}/>
-                <meshStandardMaterial map={metalTexture} side={THREE.DoubleSide}/>
-            </mesh>*/
         );
     } else if (terrain.type == TerrainType.Ramp) {
         return (
