@@ -9,10 +9,10 @@ export enum Lane {
 export function laneToOffset(lane: Lane): number {
     switch(lane) {
         case Lane.Left:
-            return 2;
+            return 3;
         case Lane.Center:
             return 0;
         case Lane.Right:
-            return -2;
+            return -3;
     }
 }

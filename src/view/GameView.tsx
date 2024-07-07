@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as THREE from 'three';
-import GravelTexture from "../../assets/gravel.png";
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Game, GameInstance } from '../model/Game';
 import PlayerView from './PlayerView';
@@ -8,12 +7,7 @@ import { TerrainView } from './TerrainView';
 import { Lane, laneToOffset } from '../model/Lane';
 import { subscribe, useSnapshot } from 'valtio';
 import { gameState } from '..';
-
-const grassTexture = new THREE.TextureLoader().load(GravelTexture);
-
-grassTexture.wrapS = THREE.RepeatWrapping;
-grassTexture.wrapT = THREE.RepeatWrapping;
-grassTexture.repeat.set(3,15);
+import { Surroundings } from './Surroundings';
 
 function GGDiv(): React.JSX.Element {
     const snap = useSnapshot(gameState);
@@ -84,10 +78,7 @@ const GameInner = React.memo((): React.JSX.Element => {
         <ambientLight intensity={Math.PI / 2} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-        <mesh rotation={[Math.PI/2, 0, 0]} position={[0,0,23]}>
-            <planeGeometry args={[6, 50]} />
-            <meshStandardMaterial map={grassTexture} side={THREE.DoubleSide} />
-        </mesh>
+        <Surroundings/>
         <PlayerView/>
         {terrains}
     </>

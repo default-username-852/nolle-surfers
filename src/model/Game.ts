@@ -36,6 +36,7 @@ export class GameInstance {
     score: number = 0;
     gameSpeed: number = 2.5;
     generatedFrontier: number = 10; // represents how many units forward has been generated
+    worldOffset: number = 0;
     gameOver: boolean = false;
 
     constructor () {
@@ -54,6 +55,7 @@ export class GameInstance {
         this.score += worldOffset;
 
         this.generatedFrontier -= worldOffset;
+        this.worldOffset -= worldOffset;
 
         this.terrainManager.update(worldOffset);
 
