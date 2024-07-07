@@ -1,14 +1,24 @@
 import * as THREE from "three";
 import * as React from "react";
-import GravelTexture from "../../assets/gravel.png";
-import { useFrame } from "@react-three/fiber";
+import RailTexturue from "./rail.jpg";
+import { useFrame, useLoader } from "@react-three/fiber";
 import { gameState } from "..";
 
-const grassTexture = new THREE.TextureLoader().load(GravelTexture);
+function BottomPlate(): React.JSX.Element {
+    const texture = useLoader(THREE.TextureLoader, RailTexturue) as THREE.Texture;
 
-grassTexture.wrapS = THREE.RepeatWrapping;
-grassTexture.wrapT = THREE.RepeatWrapping;
-grassTexture.repeat.set(3,15);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(15,3);
+    texture.rotation = Math.PI / 2;
+
+    return (
+        <mesh rotation={[Math.PI/2, 0, 0]} position={[0,0,0]}>
+            <planeGeometry args={[9, 50]} />
+            <meshStandardMaterial map={texture} side={THREE.DoubleSide} />
+        </mesh>
+    );
+}
 
 export function Surroundings(): React.JSX.Element {
     const groupRef = React.useRef<THREE.Group>(null);
@@ -20,9 +30,6 @@ export function Surroundings(): React.JSX.Element {
     });
 
     return (<group ref={groupRef}>
-        <mesh rotation={[Math.PI/2, 0, 0]} position={[0,0,0]}>
-            <planeGeometry args={[9, 50]} />
-            <meshStandardMaterial map={grassTexture} side={THREE.DoubleSide} />
-        </mesh>
+        <BottomPlate/>
     </group>);
 }

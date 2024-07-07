@@ -1,4 +1,3 @@
-import * as Deque from "double-ended-queue";
 import { Lane } from "./Lane";
 import { Terrain, TerrainType } from "./Terrain";
 
@@ -27,5 +26,5 @@ export const segments = [
         new Terrain(TerrainType.Ramp, 0), new Terrain(TerrainType.Wagon, 10)
     ], [
         new Terrain(TerrainType.Wagon, 15), new Terrain(TerrainType.Wagon, 35), new Terrain(TerrainType.Wagon, 55)
-    ], 110),
+    ], 80),
 ];
