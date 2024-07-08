@@ -55,7 +55,7 @@ export class GameInstance {
         this.score += worldOffset;
 
         this.generatedFrontier -= worldOffset;
-        this.worldOffset -= worldOffset;
+        this.worldOffset += worldOffset;
 
         this.terrainManager.update(worldOffset);
 
