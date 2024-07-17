@@ -2,7 +2,6 @@ import { Terrain } from "./Terrain";
 import Player from "./Player";
 import { Lane } from "./Lane";
 import { segments } from "./Segment";
-import { proxy } from "valtio";
 import { TerrainManager } from "./TerrainManager";
 
 const INCREASE_SPEED_RATE: number = 0.01;
@@ -34,7 +33,7 @@ export class GameInstance {
     player: Player;
     terrainManager = new TerrainManager();
     score: number = 0;
-    gameSpeed: number = 2.5;
+    gameSpeed: number = 5;
     generatedFrontier: number = 10; // represents how many units forward has been generated
     worldOffset: number = 0;
     gameOver: boolean = false;
