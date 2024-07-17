@@ -8,7 +8,7 @@
     "build": "webpack --mode=development",
     "bundle": "webpack --mode=production",
     "watch": "webpack --mode=development --watch",
-    "server": "webpack serve"
+    "server": "webpack serve --mode=development"
   },
   "author": "Eskil Queseth",
   "license": "GPL-3.0-or-later",
