@@ -65,7 +65,8 @@ export class GameInstance {
                     break;
                 case ObstacleType.WagonStart:
                     // allows the player to go from a wagon or ramp to a wagon
-                    if(!this.terrainInLane(this.player.lane)) { 
+                    // also let player go from nothing to a wagon, if they are high enough
+                    if(!this.terrainInLane(this.player.lane) && this.player.height < 4) { 
                         this.gameOver = true;
                         return;
                     }
