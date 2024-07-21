@@ -118,6 +118,8 @@ export class GameInstance {
                 this.terrainManager.addObstacle(newO, l);
             }
         }
+        
+        this.terrainManager.thisDidChange();
 
         this.generatedFrontier += newSegment.length;
     }

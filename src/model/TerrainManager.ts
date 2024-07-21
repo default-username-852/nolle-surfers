@@ -1,14 +1,23 @@
 import { Lane } from "./Lane";
-import * as Deque from "double-ended-queue";
 import { Terrain } from "./Terrain";
-import { proxy } from "valtio";
+import { proxy, ref } from "valtio";
 import Obstacle from "./Obstacle";
+import { PriorityQueue } from "@datastructures-js/priority-queue";
+
+interface IHasOffset {
+    offset: number
+}
+
+function compareHasOffset<T extends IHasOffset>(a: T, b: T): number {
+    return a.offset - b.offset;
+}
 
 export class TerrainManager {
-    terrain: { [key in Lane]: Deque<Terrain> }; // invariant: each deque is non-decreasing w.r.t. the offset value
+    terrain: { [key in Lane]: PriorityQueue<Terrain> }; // invariant: each deque is non-decreasing w.r.t. the offset value
     terrainIdMap: { [key: string]: Terrain } = {};
-    obstacle: { [key in Lane]: Deque<Obstacle> }; // invariant: each deque is non-decreasing w.r.t. the offset value
+    obstacle: { [key in Lane]: PriorityQueue<Obstacle> }; // invariant: each deque is non-decreasing w.r.t. the offset value
     obstacleIdMap: { [key: string]: Obstacle } = {};
+    didChange: number = 0; // hack to allow reactive updates. will change whenever a terrain or obstacle is added
 
     terrains(lane: Lane): Terrain[] {
         return this.terrain[lane].toArray();
@@ -20,48 +29,54 @@ export class TerrainManager {
     
     constructor() {
         this.terrain = {
-            [Lane.Left]: new Deque(),
-            [Lane.Center]: new Deque(),
-            [Lane.Right]: new Deque(),
+            [Lane.Left]: ref(new PriorityQueue(compareHasOffset)),
+            [Lane.Center]: ref(new PriorityQueue(compareHasOffset)),
+            [Lane.Right]: ref(new PriorityQueue(compareHasOffset)),
         };
         this.obstacle = {
-            [Lane.Left]: new Deque(),
-            [Lane.Center]: new Deque(),
-            [Lane.Right]: new Deque(),
+            [Lane.Left]: ref(new PriorityQueue(compareHasOffset)),
+            [Lane.Center]: ref(new PriorityQueue(compareHasOffset)),
+            [Lane.Right]: ref(new PriorityQueue(compareHasOffset)),
         }
+    }
+    
+    thisDidChange() {
+        this.didChange = Math.random();
     }
 
     update(worldOffset: number) {
         for(const [_, l] of Object.entries(this.terrain)) {
-            for(const t of l.toArray()) { // grr performance perhaps
+            for(const t of l.toArray()) {
                 t.update(worldOffset);
             }
 
             while(true) {
-                const front = l.peekFront();
+                const front = l.front();
                 if (!front || front.bounds()[1] > -5) {
                     break;
                 }
-                const removed = l.removeFront();
+                const removed = l.pop();
                 if (removed) {
                     delete this.terrainIdMap[removed?.uuid];
+                    this.thisDidChange();
                 }
             }
         }
         
         for(const [_, l] of Object.entries(this.obstacle)) {
-            for(const o of l.toArray()) { // grr performance perhaps
+            for(const o of l.toArray()) {
                 o.update(worldOffset);
             }
 
             while(true) {
-                const front = l.peekFront();
+                const front = l.front();
                 if (!front || front.offset > -5) {
                     break;
                 }
-                const removed = l.removeFront();
+                const removed = l.pop();
                 if (removed) {
                     delete this.obstacleIdMap[removed?.uuid];
+                    this.thisDidChange();
                 }
             }
         }
@@ -69,21 +84,13 @@ export class TerrainManager {
 
     terrainAt0(lane: Lane): Terrain | undefined {
         const terrainInLane = this.terrain[lane];
-        let idx = 0;
-        while(true) {
-            const obstacle = terrainInLane.get(idx);
-            if (!obstacle) {
-                break;
-            }
-
-            const [lower, upper] = obstacle.bounds();
+        for(const terrain of terrainInLane.toArray()) {
+            const [lower, upper] = terrain.bounds();
             if (lower <= 0 && upper >= 0) {
-                return obstacle;
+                return terrain;
             } else if (lower > 0) { // still haven't reached this obstacle
                 break;
             }
-
-            idx++;
         }
 
         return undefined;
@@ -91,22 +98,14 @@ export class TerrainManager {
     
     nextObstacle(lane: Lane): Obstacle | undefined {
         const obstacleInLane = this.obstacle[lane];
-        let idx = 0;
-        while(true) {
-            const obstacle = obstacleInLane.get(idx);
-            if (!obstacle) {
-                break;
-            }
-
+        for(const obstacle of obstacleInLane.toArray()) {
             const pos = obstacle.offset;
             if (pos > 0) {
                 return obstacle;
             }
-            idx++;
         }
 
         return undefined;
-        
     }
 
     terrainById(id: string): Terrain | undefined {
@@ -122,8 +121,7 @@ export class TerrainManager {
         
         this.terrainIdMap[terrain.uuid] = p;
 
-        // TODO: check that invariant is maintained
-        this.terrain[lane].insertBack(p);
+        this.terrain[lane].push(p);
     }
     
     addObstacle(obstacle: Obstacle, lane: Lane) {
@@ -131,6 +129,6 @@ export class TerrainManager {
         
         this.obstacleIdMap[obstacle.uuid] = obstacle;
         
-        this.obstacle[lane].insertBack(p);
+        this.obstacle[lane].push(p);
     }
 }

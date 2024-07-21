@@ -66,13 +66,14 @@ const GameInner = React.memo((): React.JSX.Element => {
     const terrains: React.JSX.Element[] = [];
     const obstacles: React.JSX.Element[] = [];
 
+    const tm = useSnapshot(gameState).currentInstance.terrainManager;
+    void tm.didChange; // to subscribe to updates
     for(let l of [Lane.Left, Lane.Center, Lane.Right]) {
-        const thisGame = useSnapshot(gameState).currentInstance;
-        const ts = thisGame.terrainManager.terrains(l);
+        const ts = tm.terrains(l);
         for(const t of ts) { // grr performance perhaps
             terrains.push(<TerrainView terrainId={t.uuid} lane={l} key={t.uuid}/>)
         }
-        const os = thisGame.terrainManager.obstacles(l);
+        const os = tm.obstacles(l);
         for(const o of os) {
             obstacles.push(<ObstacleView obstacleId={o.uuid} lane={l} key={o.uuid}/>);
         }
