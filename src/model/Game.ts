@@ -1,7 +1,7 @@
 import { Terrain } from "./Terrain";
 import Player from "./Player";
 import { Lane } from "./Lane";
-import { segments } from "./Segment";
+import { SEGMENTS } from "./Segment";
 import { TerrainManager } from "./TerrainManager";
 
 const INCREASE_SPEED_RATE: number = 0.01;
@@ -30,7 +30,7 @@ export class Game {
 }
 
 export class GameInstance {
-    player: Player;
+    player: Player = new Player();
     terrainManager = new TerrainManager();
     score: number = 0;
     gameSpeed: number = 5;
@@ -38,9 +38,7 @@ export class GameInstance {
     worldOffset: number = 0;
     gameOver: boolean = false;
 
-    constructor () {
-        this.player = new Player();
-    }
+    constructor () {}
 
     update(delta: number) {
         if (this.gameOver) {
@@ -82,14 +80,21 @@ export class GameInstance {
     }
 
     generateNewSegment() {
-        const newSegment = segments[Math.floor(Math.random()*segments.length)];
+        const newSegment = SEGMENTS[Math.floor(Math.random()*SEGMENTS.length)];
 
         for(const l of [Lane.Left, Lane.Center, Lane.Right]) {
-            let ts = newSegment.terrain[l];
+            const ts = newSegment.terrain[l];
             for(const t of ts) {
-                let newT = t.clone();
+                const newT = t.clone();
                 newT.offset += this.generatedFrontier;
                 this.terrainManager.addTerrain(newT, l);
+            }
+            const os = newSegment.obstacle[l];
+            
+            for(const o of os) {
+                const newO = o.clone();
+                newO.offset += this.generatedFrontier;
+                this.terrainManager.addObstacle(newO, l);
             }
         }
 

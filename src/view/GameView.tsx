@@ -8,6 +8,7 @@ import { Lane, laneToOffset } from '../model/Lane';
 import { subscribe, useSnapshot } from 'valtio';
 import { gameState } from '..';
 import { Surroundings } from './Surroundings';
+import { ObstacleView } from './ObstacleView';
 
 function GGDiv(): React.JSX.Element {
     const snap = useSnapshot(gameState);
@@ -62,14 +63,18 @@ const GameInner = React.memo((): React.JSX.Element => {
         camera.position.x = THREE.MathUtils.damp(camera.position.x, laneToOffset(gameState.currentInstance.player.lane) * 0.8, 5, delta);
     });
 
-    const terrains: Array<React.JSX.Element> = [];
+    const terrains: React.JSX.Element[] = [];
+    const obstacles: React.JSX.Element[] = [];
 
-    let count = 0;
     for(let l of [Lane.Left, Lane.Center, Lane.Right]) {
-        const ts = useSnapshot(gameState).currentInstance.terrainManager.terrain[l];
-        for(let t of ts.toArray()) { // grr performance perhaps
+        const thisGame = useSnapshot(gameState).currentInstance;
+        const ts = thisGame.terrainManager.terrains(l);
+        for(const t of ts) { // grr performance perhaps
             terrains.push(<TerrainView terrainId={t.uuid} lane={l} key={t.uuid}/>)
-            count++;
+        }
+        const os = thisGame.terrainManager.obstacles(l);
+        for(const o of os) {
+            obstacles.push(<ObstacleView obstacleId={o.uuid} lane={l} key={o.uuid}/>);
         }
     }
 
@@ -81,6 +86,7 @@ const GameInner = React.memo((): React.JSX.Element => {
         <Surroundings/>
         <PlayerView/>
         {terrains}
+        {obstacles}
     </>
     )
 });
