@@ -5,7 +5,7 @@ export const LOW_OBSTACLE_HEIGHT: number = 1;
 export enum ObstacleType {
     Under = 1, // must roll under
     Over = 2, // must jump over
-    Wall = 1 | 2, // will lose if hit
+    WagonStart = 1 | 2, // will lose if hit
     Bar = 0, // can both jump over and roll under
 };
 

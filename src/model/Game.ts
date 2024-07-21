@@ -1,4 +1,4 @@
-import { Terrain } from "./Terrain";
+import { Terrain, TerrainType } from "./Terrain";
 import Player from "./Player";
 import { Lane } from "./Lane";
 import { SEGMENTS } from "./Segment";
@@ -55,7 +55,7 @@ export class GameInstance {
         if(nextObstacle && nextObstacle.offset - worldOffset < 0) { // player hits the obstacle in this update
             switch(nextObstacle.type) {
                 case ObstacleType.Under:
-                    // TODO
+                    // TODO: add rolling
                     break;
                 case ObstacleType.Over:
                     if(this.player.height < LOW_OBSTACLE_HEIGHT) {
@@ -63,9 +63,13 @@ export class GameInstance {
                         return;
                     }
                     break;
-                case ObstacleType.Wall:
-                    this.gameOver = true;
-                    return;
+                case ObstacleType.WagonStart:
+                    // allows the player to go from a wagon or ramp to a wagon
+                    if(!this.terrainInLane(this.player.lane)) { 
+                        this.gameOver = true;
+                        return;
+                    }
+                    break;
                 case ObstacleType.Bar:
                     // TODO: add rolling
                     if(this.player.height < LOW_OBSTACLE_HEIGHT) {

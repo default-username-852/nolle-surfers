@@ -1,7 +1,7 @@
 import { Lane } from "./Lane";
-import { Terrain } from "./Terrain";
+import { Terrain, TerrainType } from "./Terrain";
 import { proxy, ref } from "valtio";
-import Obstacle from "./Obstacle";
+import Obstacle, { ObstacleType } from "./Obstacle";
 import { PriorityQueue } from "@datastructures-js/priority-queue";
 
 interface IHasOffset {
@@ -117,6 +117,10 @@ export class TerrainManager {
     }
 
     addTerrain(terrain: Terrain, lane: Lane) {
+        if(terrain.type === TerrainType.Wagon) { // a wagon has an implied lose at the start of the entity
+            this.addObstacle(new Obstacle(ObstacleType.WagonStart, terrain.offset), lane);
+        }
+        
         const p = proxy(terrain);
         
         this.terrainIdMap[terrain.uuid] = p;

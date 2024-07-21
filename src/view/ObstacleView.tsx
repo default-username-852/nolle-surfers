@@ -50,7 +50,7 @@ export const ObstacleView = function ({lane, obstacleId}: {lane: Lane, obstacleI
                 <meshStandardMaterial map={metalTexture}/>
                 <planeGeometry args={[1.8, 1]}/>
             </mesh>);
-        case ObstacleType.Wall:
+        case ObstacleType.WagonStart:
             return <></>;
         case ObstacleType.Bar:
             return (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 1, 5]} ref={meshRef}>
