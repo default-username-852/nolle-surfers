@@ -3,6 +3,7 @@ import Player from "./Player";
 import { Lane } from "./Lane";
 import { SEGMENTS } from "./Segment";
 import { TerrainManager } from "./TerrainManager";
+import { LOW_OBSTACLE_HEIGHT, ObstacleType } from "./Obstacle";
 
 const INCREASE_SPEED_RATE: number = 0.01;
 
@@ -48,6 +49,32 @@ export class GameInstance {
         this.gameSpeed += delta * INCREASE_SPEED_RATE;
 
         const worldOffset = this.gameSpeed * delta;
+       
+        const nextObstacle = this.terrainManager.nextObstacle(this.player.lane);
+        
+        if(nextObstacle && nextObstacle.offset - worldOffset < 0) { // player hits the obstacle in this update
+            switch(nextObstacle.type) {
+                case ObstacleType.Under:
+                    // TODO
+                    break;
+                case ObstacleType.Over:
+                    if(this.player.height < LOW_OBSTACLE_HEIGHT) {
+                        this.gameOver = true;
+                        return;
+                    }
+                    break;
+                case ObstacleType.Wall:
+                    this.gameOver = true;
+                    return;
+                case ObstacleType.Bar:
+                    // TODO: add rolling
+                    if(this.player.height < LOW_OBSTACLE_HEIGHT) {
+                        this.gameOver = true;
+                        return;
+                    }
+                    break;
+            }
+        }
 
         this.score += worldOffset;
 
@@ -61,12 +88,6 @@ export class GameInstance {
         }
 
         let groundHeight = this.groundHeight();
-
-        if(groundHeight - 0.1 >= this.player.height) {
-            this.update(-delta);
-            this.gameOver = true;
-            return;
-        }
 
         this.player.update(delta, groundHeight);
     }

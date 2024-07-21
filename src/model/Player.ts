@@ -33,6 +33,9 @@ export default class Player {
                 } else if (groundHeight < this.height) { // ground just dissapeared
                     this.runningState = RunningState.AirBuffer;
                     this.airRunTime = AIR_RUN_TIME;
+                } else if (groundHeight > this.height) {
+                    // ground moved up, snap to it
+                    this.height = groundHeight
                 }
             break;
             case RunningState.AirBuffer:

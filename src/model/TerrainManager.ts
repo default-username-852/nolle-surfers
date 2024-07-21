@@ -88,6 +88,26 @@ export class TerrainManager {
 
         return undefined;
     }
+    
+    nextObstacle(lane: Lane): Obstacle | undefined {
+        const obstacleInLane = this.obstacle[lane];
+        let idx = 0;
+        while(true) {
+            const obstacle = obstacleInLane.get(idx);
+            if (!obstacle) {
+                break;
+            }
+
+            const pos = obstacle.offset;
+            if (pos > 0) {
+                return obstacle;
+            }
+            idx++;
+        }
+
+        return undefined;
+        
+    }
 
     terrainById(id: string): Terrain | undefined {
         return this.terrainIdMap[id];

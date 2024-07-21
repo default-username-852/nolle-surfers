@@ -41,14 +41,14 @@ export const ObstacleView = function ({lane, obstacleId}: {lane: Lane, obstacleI
 
     switch(obstacle.type) {
         case ObstacleType.Under:
-            return (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 0.5, 5]} ref={meshRef}>
-                <meshStandardMaterial map={metalTexture}/>
-                <planeGeometry args={[1.8, 1]}/>
-            </mesh>);
-        case ObstacleType.Over:
             return (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 2, 5]} ref={meshRef}>
                 <meshStandardMaterial map={metalTexture}/>
                 <planeGeometry args={[1.8, 2]}/>
+            </mesh>);
+        case ObstacleType.Over:
+            return (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 0.5, 5]} ref={meshRef}>
+                <meshStandardMaterial map={metalTexture}/>
+                <planeGeometry args={[1.8, 1]}/>
             </mesh>);
         case ObstacleType.Wall:
             return <></>;
