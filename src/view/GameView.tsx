@@ -9,6 +9,7 @@ import { subscribe, useSnapshot } from 'valtio';
 import { gameState } from '..';
 import { Surroundings } from './Surroundings';
 import { ObstacleView } from './ObstacleView';
+import { PickupView } from './PickupView';
 
 function GGDiv(): React.JSX.Element {
     const snap = useSnapshot(gameState);
@@ -65,6 +66,7 @@ const GameInner = React.memo((): React.JSX.Element => {
 
     const terrains: React.JSX.Element[] = [];
     const obstacles: React.JSX.Element[] = [];
+    const pickups: React.JSX.Element[] = [];
 
     const tm = useSnapshot(gameState).currentInstance.terrainManager;
     void tm.didChange; // to subscribe to updates
@@ -77,6 +79,10 @@ const GameInner = React.memo((): React.JSX.Element => {
         for(const o of os) {
             obstacles.push(<ObstacleView obstacleId={o.uuid} lane={l} key={o.uuid}/>);
         }
+        const ps = tm.pickups(l);
+        for(const p of ps) {
+            pickups.push(<PickupView pickupId={p.uuid} lane={l} key={p.uuid}/>);
+        }
     }
 
     return (
@@ -88,6 +94,7 @@ const GameInner = React.memo((): React.JSX.Element => {
         <PlayerView/>
         {terrains}
         {obstacles}
+        {pickups}
     </>
     )
 });

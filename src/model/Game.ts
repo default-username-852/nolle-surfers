@@ -49,9 +49,9 @@ export class GameInstance {
         this.gameSpeed += delta * INCREASE_SPEED_RATE;
 
         const worldOffset = this.gameSpeed * delta;
-       
+
         const nextObstacle = this.terrainManager.nextObstacle(this.player.lane);
-        
+
         if(nextObstacle && nextObstacle.offset - worldOffset < 0) { // player hits the obstacle in this update
             switch(nextObstacle.type) {
                 case ObstacleType.Under:
@@ -66,7 +66,7 @@ export class GameInstance {
                 case ObstacleType.WagonStart:
                     // allows the player to go from a wagon or ramp to a wagon
                     // also let player go from nothing to a wagon, if they are high enough
-                    if(!this.terrainInLane(this.player.lane) && this.player.height < 4) { 
+                    if(!this.terrainInLane(this.player.lane) && this.player.height < 4) {
                         this.gameOver = true;
                         return;
                     }
@@ -116,14 +116,21 @@ export class GameInstance {
                 this.terrainManager.addTerrain(newT, l);
             }
             const os = newSegment.obstacle[l];
-            
+
             for(const o of os) {
                 const newO = o.clone();
                 newO.offset += this.generatedFrontier;
                 this.terrainManager.addObstacle(newO, l);
             }
+            const ps = newSegment.pickups[l];
+
+            for(const p of ps) {
+                const newP = p.clone();
+                newP.offset += this.generatedFrontier;
+                this.terrainManager.addPickup(newP, l);
+            }
         }
-        
+
         this.terrainManager.thisDidChange();
 
         this.generatedFrontier += newSegment.length;

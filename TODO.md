@@ -10,3 +10,4 @@
 - något att samla in, tex mynt
 - roliga powerups?
 - musik i bakgrunden, helst nollelåten
+- rullande

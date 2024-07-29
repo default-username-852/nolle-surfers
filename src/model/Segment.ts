@@ -1,5 +1,6 @@
 import { Lane } from "./Lane";
 import Obstacle, { ObstacleType } from "./Obstacle";
+import { Pickup, PickupType } from "./Pickup";
 import { Terrain, TerrainType } from "./Terrain";
 
 /**
@@ -8,9 +9,15 @@ import { Terrain, TerrainType } from "./Terrain";
 export class Segment {
     terrain: { [key in Lane]: Terrain[] };
     obstacle: { [key in Lane]: Obstacle[] };
+    pickups: { [key in Lane]: Pickup[] };
     length: number;
 
-    constructor(terrains: [Terrain[],Terrain[],Terrain[]], obstacles: [Obstacle[],Obstacle[],Obstacle[]], length: number) {
+    constructor(
+        terrains: [Terrain[],Terrain[],Terrain[]],
+        obstacles: [Obstacle[],Obstacle[],Obstacle[]],
+        pickups: [Pickup[], Pickup[], Pickup[]],
+        length: number
+    ) {
         this.terrain = {
             [Lane.Left]: terrains[0],
             [Lane.Center]: terrains[1],
@@ -20,6 +27,11 @@ export class Segment {
             [Lane.Left]: obstacles[0],
             [Lane.Center]: obstacles[1],
             [Lane.Right]: obstacles[2],
+        };
+        this.pickups = {
+            [Lane.Left]: pickups[0],
+            [Lane.Center]: pickups[1],
+            [Lane.Right]: pickups[2],
         };
         this.length = length;
     }
@@ -35,8 +47,8 @@ export const SEGMENTS = [
             new Terrain(TerrainType.Ramp, 0), new Terrain(TerrainType.Wagon, 10)
         ], [
             new Terrain(TerrainType.Wagon, 15), new Terrain(TerrainType.Wagon, 35), new Terrain(TerrainType.Wagon, 55)
-        ]], 
-        [[], [], []], 80),
+        ]],
+        [[], [], []], [[], [], []], 80),
     new Segment(
         [[],[],[]],
         [[
@@ -45,7 +57,11 @@ export const SEGMENTS = [
             new Obstacle(ObstacleType.Over, 20)
         ], [
             new Obstacle(ObstacleType.Under, 20)
-        ]],
+        ]], [[], [], []],
         50
+    ),
+    new Segment(
+        [[], [], []], [[], [], []],
+        [[new Pickup(PickupType.Notes, 1, 10)], [new Pickup(PickupType.Notes, 1, 10)], [new Pickup(PickupType.Notes, 1, 10)]], 20
     )
 ];
