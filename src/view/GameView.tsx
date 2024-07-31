@@ -27,6 +27,44 @@ function GGDiv(): React.JSX.Element {
     </div>)
 }
 
+function IntroductionScreen({ startMusic }: { startMusic: () => void }): React.JSX.Element {
+    return <>
+        <div style={{width: "100%", height: "100%", backgroundColor:"#32956a", position: "absolute", color: "white"}} onClick={(_) => {
+            gameState.started = true;
+            startMusic();
+        }}>
+            <div style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: "2em",
+                position: "relative",
+                width: "min(80%, 50em)",
+                fontFamily: "monospace",
+                fontStyle: "normal",
+                fontSize: "1.5em",
+            }}>
+                <h1 style={{textAlign: "center"}}>NØlle-surfers</h1>
+                <p>
+                    Å nej! Kjelly är sen till föreläsningen. Hjälp hen springa dit!
+                    Föhseriet har dock försökt hindra hen så de har placerat
+                    hinder på vägen. Hjälp hen undvika alla hinder genom att
+                    hoppa och rulla. Hen har även tappat allt i sin väska på vägen, så
+                    hjälp hen samla in sina grejer.
+                </p>
+
+                <p>
+                    Om man sveper vänster och höger rör sig Kjelly vänster och
+                    höger. Svep upp för att hoppa, och svep ner för att rulla.
+                    Det går även bra att använda piltangenter, om du spelar på
+                    en dator.
+                </p>
+
+                <h3>Klicka varsomhelst för att starta!</h3>
+            </div>
+        </div>
+    </>;
+}
+
 export default function GameView(): React.JSX.Element {
     return (<>
     <Canvas scene={{background: new THREE.Color(0x000000)}} camera={{position: [0,4,-2.5]}}>
@@ -45,14 +83,11 @@ function GameOverlay(): React.JSX.Element {
     let overlay;
 
     if (!snap.started) {
-        overlay = <div style={{width: "100%", height: "100%", backgroundColor:"green", position: "absolute"}} onClick={(_) => {
-            gameState.started = true;
+        overlay = <IntroductionScreen startMusic={() => {
             if(soundPlayer.current) {
                 soundPlayer.current.play();
             }
-        }}>
-            <p>pop<br/> pup pub krök</p>
-        </div>;
+        }}/>;
     } else if (snap.currentInstance.gameOver) {
         overlay = <GGDiv/>;
     } else { // game is running
@@ -65,7 +100,7 @@ function GameOverlay(): React.JSX.Element {
         <div style={{position: "absolute", left: 0, top: 0, width: "100%", height: "100%"}}>
             {overlay}
         </div>
-        <audio src={Music} autoPlay={true} preload='auto' ref={soundPlayer} playsInline={true}/>
+        <audio src={Music} autoPlay={true} preload='auto' ref={soundPlayer} playsInline={true} loop={true}/>
     </>);
 }
 
