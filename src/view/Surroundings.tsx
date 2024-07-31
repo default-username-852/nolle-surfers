@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import * as React from "react";
 import RailTexturue from "./rail.jpg";
+import GroundTexture from "./ground.jpg";
 import Skyline from "./skyline.jpg";
 import GroundSideTexture from "./ground.jpg";
 import { MeshProps, useFrame, useLoader } from "@react-three/fiber";
@@ -60,7 +61,7 @@ function Wall(props: MeshProps): React.JSX.Element {
 function Roof(props: MeshProps): React.JSX.Element {
     return (<mesh {...props} rotation={[Math.PI/2,0,0]}>
         <planeGeometry args={[17, 50]} />
-        <meshStandardMaterial side={THREE.DoubleSide} color={0x77C1E4}/>
+        <meshStandardMaterial side={THREE.DoubleSide} color={0x8eccf3}/>
     </mesh>)
 }
 

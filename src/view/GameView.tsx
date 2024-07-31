@@ -149,10 +149,7 @@ const GameInner = React.memo((): React.JSX.Element => {
 
     return (
     <>
-        <ambientLight intensity={Math.PI / 2} />
-        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-        <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-        <fog color={0x77C1E4}/>
+        <ambientLight intensity={2.2} />
         <Surroundings/>
         <PlayerView/>
         {terrains}
