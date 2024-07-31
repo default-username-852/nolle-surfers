@@ -13,13 +13,15 @@ import Music from '../../assets/soundtrack.mp3';
 
 function GGDiv(): React.JSX.Element {
     const snap = useSnapshot(gameState);
-    return (<div style={{background: "rgba(0,0,0,.4)"}}>
+    return (<div style={{background: "rgba(0,0,0,.4)", width: "100%", height: "100%"}} onClick={() => {
+        gameState.restartGame()
+    }}>
         <div style={{color: "white", position: "absolute", top: "33%", left: "50%", transform: "translate(-50%, -50%)"}}>
             <h1 style={{fontFamily: "monospace"}}>Game over!</h1>
             <p style={{fontFamily: "monospace"}}>
                 Final score: {Math.floor(snap.currentInstance.score)} points<br/>
                 Best score: {Math.floor(Math.max(snap.currentInstance.score, snap.bestScore || 0))} points<br/>
-                Press Space to restart
+                Press anywhere to restart
             </p>
         </div>
     </div>)
@@ -49,7 +51,7 @@ function GameOverlay(): React.JSX.Element {
                 soundPlayer.current.play();
             }
         }}>
-            <p>pop<br/> pup</p>
+            <p>pop<br/> pup pub krök</p>
         </div>;
     } else if (snap.currentInstance.gameOver) {
         overlay = <GGDiv/>;

@@ -5,6 +5,5 @@
       tid. samla också in material för föreläsning, typ anteckningar och pennor
       etc
 - bättre modeller + texturer
-- touch-kontroller
 - mer varierade banor
 - roliga powerups?

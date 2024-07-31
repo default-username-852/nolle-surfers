@@ -23,14 +23,9 @@ export class Game {
         }
     }
 
-	keyboardEvent(event: KeyboardEvent) {
-        switch (event.code) {
-            case "Space":
-                this.restartGame();
-                return;
-        }
-        this.currentInstance.keyboardEvent(event);
-	}
+    gesture(direction: "up" | "down" | "left" | "right") {
+        this.currentInstance.gesture(direction);
+    }
 }
 
 export class GameInstance {
@@ -178,22 +173,22 @@ export class GameInstance {
         }
     }
 
-	keyboardEvent(event: KeyboardEvent) {
+	gesture(event: "up" | "down" | "left" | "right") {
         if (this.gameOver) {
             return;
         }
 
-        switch (event.code) {
-            case "ArrowUp":
+        switch (event) {
+            case "up":
                 this.player.jump();
                 break;
-            case "ArrowLeft":
+            case "left":
                 this.move("left");
                 break;
-            case "ArrowRight":
+            case "right":
                 this.move("right");
                 break;
-            case "ArrowDown":
+            case "down":
                 this.player.roll();
                 break;
             default:
