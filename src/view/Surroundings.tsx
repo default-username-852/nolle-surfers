@@ -14,10 +14,20 @@ function BottomPlate(): React.JSX.Element {
     texture.rotation = Math.PI / 2;
 
     return (
-        <mesh rotation={[Math.PI/2, 0, 0]} position={[0,0,0]}>
-            <planeGeometry args={[9, 50]} />
-            <meshStandardMaterial map={texture} side={THREE.DoubleSide} />
-        </mesh>
+        <>
+            <mesh rotation={[Math.PI/2, 0, 0]} position={[0,0,0]}>
+                <planeGeometry args={[9, 50]} />
+                <meshStandardMaterial map={texture} side={THREE.DoubleSide} />
+            </mesh>
+            <mesh rotation={[Math.PI/2, 0, 0]} position={[6.5,0,0]}>
+                <planeGeometry args={[4, 50]}/>
+                <meshStandardMaterial color={0x888888} side={THREE.DoubleSide} />
+            </mesh>
+            <mesh rotation={[Math.PI/2, 0, 0]} position={[-6.5,0,0]}>
+                <planeGeometry args={[4, 50]}/>
+                <meshStandardMaterial color={0x888888} side={THREE.DoubleSide} />
+            </mesh>
+        </>
     );
 }
 
@@ -37,7 +47,7 @@ function Wall(props: MeshProps): React.JSX.Element {
 
 function Roof(props: MeshProps): React.JSX.Element {
     return (<mesh {...props} rotation={[Math.PI/2,0,0]}>
-        <planeGeometry args={[9, 50]} />
+        <planeGeometry args={[17, 50]} />
         <meshStandardMaterial side={THREE.DoubleSide} color={0x77C1E4}/>
     </mesh>)
 }
@@ -58,14 +68,14 @@ export function Surroundings(): React.JSX.Element {
     return (<>
         <group ref={groupRef}>
             <BottomPlate/>
-            <Wall position={[-4.5,5,0]}/>
-            <Wall position={[4.5,5,0]}/>
+            <Wall position={[-8.5,5,0]}/>
+            <Wall position={[8.5,5,0]}/>
             <Roof position={[0,9.99,0]}/>
         </group>
         <group ref={groupRef2}>
             <BottomPlate/>
-            <Wall position={[-4.5,5,0]}/>
-            <Wall position={[4.5,5,0]}/>
+            <Wall position={[-8.5,5,0]}/>
+            <Wall position={[8.5,5,0]}/>
             <Roof position={[0,9.99,0]}/>
         </group>
     </>);
