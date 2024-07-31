@@ -7,9 +7,11 @@ import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import Turtle from "./turtle_anim.glb";
 import { useSnapshot } from "valtio";
 import { RunningState } from "../model/Player";
+import { Shadow, ShadowType } from "@react-three/drei";
 
 export default function PlayerView(): React.JSX.Element {
     const meshRef = React.useRef<THREE.Mesh>(null);
+    const shadowRef = React.useRef<ShadowType | null>(null);
     const xPos = React.useRef(0);
     const model = useLoader(GLTFLoader, Turtle) as GLTF & ObjectMap;
     const mixer = React.useRef<THREE.AnimationMixer>(new THREE.AnimationMixer(model.scene));
@@ -38,9 +40,12 @@ export default function PlayerView(): React.JSX.Element {
     }, [onGround]);
 
     useFrame((s, delta) => {
+        const player = gameState.currentInstance.player;
         if (meshRef.current) {
-            const player = gameState.currentInstance.player;
             meshRef.current.position.x = THREE.MathUtils.damp(meshRef.current.position.x, laneToOffset(player.lane), 10, delta);
+            if (shadowRef.current) {
+                shadowRef.current.position.x = meshRef.current.position.x;
+            }
             xPos.current = meshRef.current.position.x;
             meshRef.current.position.y = player.height;
             if (player.runningState === RunningState.Rolling || player.runningState === RunningState.AirRoll) {
@@ -52,7 +57,8 @@ export default function PlayerView(): React.JSX.Element {
         mixer.current.update(delta);
     });
 
-    return (
+    return (<>
         <primitive object={model.scene} ref={meshRef}/>
-    );
+        <Shadow colorStop={0} position={[0,0.01,0]} ref={shadowRef} opacity={0.6}/>
+    </>);
 }

@@ -6,6 +6,7 @@ import { Lane, laneToOffset } from "../model/Lane";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { gameState } from "..";
 import { ObstacleType } from "../model/Obstacle";
+import { Shadow } from "@react-three/drei";
 
 const metalTexture = new THREE.TextureLoader().load(MetalTexture);
 
@@ -23,7 +24,7 @@ function Ramp(props: GroupProps): React.JSX.Element {
 }
 
 export const ObstacleView = function ({lane, obstacleId}: {lane: Lane, obstacleId: string}): React.JSX.Element {
-    const meshRef = React.useRef<THREE.Mesh & THREE.Group>(null);
+    const meshRef = React.useRef<THREE.Group>(null);
     const obstacle = gameState.currentInstance.terrainManager.obstacleById(obstacleId);
 
     if(!obstacle) {
@@ -33,29 +34,39 @@ export const ObstacleView = function ({lane, obstacleId}: {lane: Lane, obstacleI
 
     useFrame((s, delta) => {
         if(meshRef.current) {
-            meshRef.current.position.x = laneToOffset(lane);
             meshRef.current.position.z = obstacle.offset;
             meshRef.current.visible = obstacle.offset <= 40;
         }
     });
 
+    let mesh;
+
     switch(obstacle.type) {
         case ObstacleType.Under:
-            return (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 2, 5]} ref={meshRef}>
+            mesh = (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 2, 0]}>
                 <meshStandardMaterial map={metalTexture}/>
                 <planeGeometry args={[1.8, 2]}/>
             </mesh>);
+            break;
         case ObstacleType.Over:
-            return (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 0.5, 5]} ref={meshRef}>
+            mesh = (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 0.5, 0]}>
                 <meshStandardMaterial map={metalTexture}/>
                 <planeGeometry args={[1.8, 1]}/>
             </mesh>);
+            break;
         case ObstacleType.WagonStart:
-            return <></>;
+            mesh = <></>;
+            break;
         case ObstacleType.Bar:
-            return (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 1, 5]} ref={meshRef}>
+            mesh = (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 1, 0]}>
                 <meshStandardMaterial map={metalTexture}/>
                 <planeGeometry args={[1.8, 0.1]}/>
             </mesh>);
+            break;
     }
+
+    return <group ref={meshRef}>
+        {mesh}
+        {obstacle.type === ObstacleType.WagonStart ? <></> : <Shadow position={[laneToOffset(lane), 0.01, 0]} scale={[2.7,1,0.8]}/>}
+    </group>
 };
