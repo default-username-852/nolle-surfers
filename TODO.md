@@ -8,4 +8,3 @@
 - touch-kontroller
 - mer varierade banor
 - roliga powerups?
-- musik i bakgrunden, helst nollelåten

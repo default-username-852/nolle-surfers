@@ -1,19 +1,19 @@
 import * as React from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Game, GameInstance } from '../model/Game';
 import PlayerView from './PlayerView';
 import { TerrainView } from './TerrainView';
 import { Lane, laneToOffset } from '../model/Lane';
-import { subscribe, useSnapshot } from 'valtio';
+import { useSnapshot } from 'valtio';
 import { gameState } from '..';
 import { Surroundings } from './Surroundings';
 import { ObstacleView } from './ObstacleView';
 import { PickupView } from './PickupView';
+import Music from '../../assets/soundtrack.mp3';
 
 function GGDiv(): React.JSX.Element {
     const snap = useSnapshot(gameState);
-    return (<div style={{position: "absolute", left: 0, top: 0, width: "100%", height: "100%", background: "rgba(0,0,0,.4)"}}>
+    return (<div style={{background: "rgba(0,0,0,.4)"}}>
         <div style={{color: "white", position: "absolute", top: "33%", left: "50%", transform: "translate(-50%, -50%)"}}>
             <h1 style={{fontFamily: "monospace"}}>Game over!</h1>
             <p style={{fontFamily: "monospace"}}>
@@ -26,20 +26,46 @@ function GGDiv(): React.JSX.Element {
 }
 
 export default function GameView(): React.JSX.Element {
-    const snap = useSnapshot(gameState).currentInstance;
-
     return (<>
     <Canvas scene={{background: new THREE.Color(0x000000)}} camera={{position: [0,4,-2.5]}}>
         <React.StrictMode>
             <GameInner/>
         </React.StrictMode>
     </Canvas>
-    {snap.gameOver ? <GGDiv/> : <p style={{color: "white", position: "absolute", top: 10, left: "50%", transform: "translate(-50%, -50%)", fontFamily: "monospace"}}>
-        {Math.floor(snap.score)} points
-    </p>}
+    <GameOverlay/>
     </>)
 }
 
+function GameOverlay(): React.JSX.Element {
+    const snap = useSnapshot(gameState);
+    const soundPlayer = React.useRef<null | HTMLAudioElement>(null);
+
+    let overlay;
+
+    if (!snap.started) {
+        overlay = <div style={{width: "100%", height: "100%", backgroundColor:"green", position: "absolute"}} onClick={(_) => {
+            gameState.started = true;
+            if(soundPlayer.current) {
+                soundPlayer.current.play();
+            }
+        }}>
+            <p>pop<br/> pup</p>
+        </div>;
+    } else if (snap.currentInstance.gameOver) {
+        overlay = <GGDiv/>;
+    } else { // game is running
+        overlay = <p style={{color: "white", position: "absolute", top: 10, left: "50%", transform: "translate(-50%, -50%)", fontFamily: "monospace"}}>
+            {Math.floor(snap.currentInstance.score)} points
+        </p>;
+    }
+
+    return (<>
+        <div style={{position: "absolute", left: 0, top: 0, width: "100%", height: "100%"}}>
+            {overlay}
+        </div>
+        <audio src={Music} autoPlay={true} preload='auto' ref={soundPlayer} playsInline={true}/>
+    </>);
+}
 
 const GameInner = React.memo((): React.JSX.Element => {
     const getThree = useThree(s => s.get);

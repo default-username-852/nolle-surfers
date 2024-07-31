@@ -1,4 +1,4 @@
-import { Terrain, TerrainType } from "./Terrain";
+import { Terrain } from "./Terrain";
 import Player, { RunningState } from "./Player";
 import { Lane } from "./Lane";
 import { SEGMENTS } from "./Segment";
@@ -8,6 +8,7 @@ import { LOW_OBSTACLE_HEIGHT, ObstacleType } from "./Obstacle";
 const INCREASE_SPEED_RATE: number = 0.01;
 
 export class Game {
+    started: boolean = false;
     currentInstance: GameInstance = new GameInstance();
     bestScore: number | undefined = undefined;
 
@@ -17,7 +18,9 @@ export class Game {
     }
 
     update(delta: number) {
-        this.currentInstance.update(delta);
+        if(this.started) {
+            this.currentInstance.update(delta);
+        }
     }
 
 	keyboardEvent(event: KeyboardEvent) {

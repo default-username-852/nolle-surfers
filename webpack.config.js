@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = 
+module.exports =
 function foo(env, argv) {
   return {
     entry: './src/index.tsx',
@@ -14,7 +14,7 @@ function foo(env, argv) {
           exclude: /node_modules/,
         },
         {
-          test: /\.(png|svg|jpg|jpeg|gif|glb)$/i,
+          test: /\.(png|svg|jpg|jpeg|gif|glb|mp3)$/i,
           type: 'asset/resource',
         },
       ],
