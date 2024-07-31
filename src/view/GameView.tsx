@@ -17,11 +17,11 @@ function GGDiv(): React.JSX.Element {
         gameState.restartGame()
     }}>
         <div style={{color: "white", position: "absolute", top: "33%", left: "50%", transform: "translate(-50%, -50%)"}}>
-            <h1 style={{fontFamily: "monospace"}}>Game over!</h1>
-            <p style={{fontFamily: "monospace"}}>
-                Final score: {Math.floor(snap.currentInstance.score)} points<br/>
-                Best score: {Math.floor(Math.max(snap.currentInstance.score, snap.bestScore || 0))} points<br/>
-                Press anywhere to restart
+            <h1>Föhseriet fångade dig!</h1>
+            <p>
+                Din poäng: {Math.floor(snap.currentInstance.score)} poäng<br/>
+                Din högsta poäng: {Math.floor(Math.max(snap.currentInstance.score, snap.bestScore || 0))} poäng<br/>
+                Klicka varsomhelst för att starta om!
             </p>
         </div>
     </div>)
@@ -39,9 +39,6 @@ function IntroductionScreen({ startMusic }: { startMusic: () => void }): React.J
                 marginTop: "2em",
                 position: "relative",
                 width: "min(80%, 50em)",
-                fontFamily: "monospace",
-                fontStyle: "normal",
-                fontSize: "1.5em",
             }}>
                 <h1 style={{textAlign: "center"}}>NØlle-surfers</h1>
                 <p>
@@ -92,12 +89,14 @@ function GameOverlay(): React.JSX.Element {
         overlay = <GGDiv/>;
     } else { // game is running
         overlay = <p style={{color: "white", position: "absolute", top: 10, left: "50%", transform: "translate(-50%, -50%)", fontFamily: "monospace"}}>
-            {Math.floor(snap.currentInstance.score)} points
+            {Math.floor(snap.currentInstance.score)} poäng
         </p>;
     }
 
     return (<>
-        <div style={{position: "absolute", left: 0, top: 0, width: "100%", height: "100%"}}>
+        <div style={{position: "absolute", left: 0, top: 0, width: "100%", height: "100%",
+                fontFamily: "monospace",
+                fontSize: "1.5em"}}>
             {overlay}
         </div>
         <audio src={Music} autoPlay={true} preload='auto' ref={soundPlayer} playsInline={true} loop={true}/>
