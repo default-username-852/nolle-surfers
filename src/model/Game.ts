@@ -50,6 +50,13 @@ export class GameInstance {
 
         const worldOffset = this.gameSpeed * delta;
 
+        const nextPickup = this.terrainManager.nextPickup(this.player.lane);
+
+        if(nextPickup && nextPickup.offset - worldOffset < 0) { // player hits the pickup in this update
+            this.terrainManager.removePickup(nextPickup.uuid);
+            this.score += nextPickup.points();
+        }
+
         const nextObstacle = this.terrainManager.nextObstacle(this.player.lane);
 
         if(nextObstacle && nextObstacle.offset - worldOffset < 0) { // player hits the obstacle in this update

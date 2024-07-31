@@ -119,6 +119,18 @@ export class TerrainManager {
         return undefined;
     }
 
+    nextPickup(lane: Lane): Pickup | undefined {
+        const pickupInLane = this.pickup[lane];
+        for(const pickup of pickupInLane.toArray()) {
+            const pos = pickup.offset;
+            if (pos > 0) {
+                return pickup;
+            }
+        }
+
+        return undefined;
+    }
+
     terrainById(id: string): Terrain | undefined {
         return this.terrainIdMap[id];
     }
@@ -157,5 +169,13 @@ export class TerrainManager {
         this.pickupIdMap[pickup.uuid] = p;
 
         this.pickup[lane].push(p);
+    }
+
+    removePickup(uuid: string) {
+        delete this.pickupIdMap[uuid];
+        for(const lane of [Lane.Left, Lane.Center, Lane.Right]) {
+            this.pickup[lane].remove((e) => e.uuid === uuid);
+        }
+        this.thisDidChange();
     }
 }

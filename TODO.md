@@ -7,7 +7,6 @@
 - bättre modeller + texturer
 - touch-kontroller
 - mer varierade banor
-- något att samla in, tex mynt
 - roliga powerups?
 - musik i bakgrunden, helst nollelåten
 - rullande

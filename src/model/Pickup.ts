@@ -25,4 +25,11 @@ export class Pickup {
     clone(): Pickup {
         return new Pickup(this.type, this.height, this.offset);
     }
+
+    points(): number {
+        switch (this.type) {
+            case PickupType.Notes:
+                return 100;
+        }
+    }
 }
