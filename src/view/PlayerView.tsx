@@ -6,6 +6,7 @@ import { gameState } from "..";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import Turtle from "./turtle_anim.glb";
 import { useSnapshot } from "valtio";
+import { RunningState } from "../model/Player";
 
 export default function PlayerView(): React.JSX.Element {
     const meshRef = React.useRef<THREE.Mesh>(null);
@@ -14,14 +15,14 @@ export default function PlayerView(): React.JSX.Element {
     const mixer = React.useRef<THREE.AnimationMixer>(new THREE.AnimationMixer(model.scene));
     const running = React.useRef(mixer.current.clipAction(model.animations[1]));
     const falling = React.useRef(mixer.current.clipAction(model.animations[0]));
-    
+
     const onGround = useSnapshot(gameState).currentInstance.player.onGround;
-    
+
     React.useEffect(() => {
         falling.current.play();
         running.current.play();
     }, []);
-    
+
     React.useEffect(() => {
         if (onGround) {
             if (falling.current.isRunning()) {
@@ -35,13 +36,18 @@ export default function PlayerView(): React.JSX.Element {
             falling.current.reset().fadeIn(0.1);
         }
     }, [onGround]);
-    
+
     useFrame((s, delta) => {
         if (meshRef.current) {
             const player = gameState.currentInstance.player;
             meshRef.current.position.x = THREE.MathUtils.damp(meshRef.current.position.x, laneToOffset(player.lane), 10, delta);
             xPos.current = meshRef.current.position.x;
             meshRef.current.position.y = player.height;
+            if (player.runningState === RunningState.Rolling || player.runningState === RunningState.AirRoll) {
+                meshRef.current.scale.y = 0.5;
+            } else {
+                meshRef.current.scale.y = 1;
+            }
         }
         mixer.current.update(delta);
     });

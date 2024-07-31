@@ -1,5 +1,5 @@
 import { Terrain, TerrainType } from "./Terrain";
-import Player from "./Player";
+import Player, { RunningState } from "./Player";
 import { Lane } from "./Lane";
 import { SEGMENTS } from "./Segment";
 import { TerrainManager } from "./TerrainManager";
@@ -52,7 +52,12 @@ export class GameInstance {
 
         const nextPickup = this.terrainManager.nextPickup(this.player.lane);
 
-        if(nextPickup && nextPickup.offset - worldOffset < 0) { // player hits the pickup in this update
+        if(
+            nextPickup &&
+            nextPickup.offset - worldOffset < 0
+            && nextPickup.height - 1 >= this.player.height
+            && nextPickup.height - 2 <= this.player.height
+        ) { // player hits the pickup in this update
             this.terrainManager.removePickup(nextPickup.uuid);
             this.score += nextPickup.points();
         }
@@ -62,7 +67,10 @@ export class GameInstance {
         if(nextObstacle && nextObstacle.offset - worldOffset < 0) { // player hits the obstacle in this update
             switch(nextObstacle.type) {
                 case ObstacleType.Under:
-                    // TODO: add rolling
+                    if (!(this.player.runningState === RunningState.Rolling)) {
+                        this.gameOver = true;
+                        return;
+                    }
                     break;
                 case ObstacleType.Over:
                     if(this.player.height < LOW_OBSTACLE_HEIGHT) {
@@ -79,8 +87,7 @@ export class GameInstance {
                     }
                     break;
                 case ObstacleType.Bar:
-                    // TODO: add rolling
-                    if(this.player.height < LOW_OBSTACLE_HEIGHT) {
+                    if(this.player.height < LOW_OBSTACLE_HEIGHT && !(this.player.runningState === RunningState.Rolling)) {
                         this.gameOver = true;
                         return;
                     }
@@ -182,6 +189,9 @@ export class GameInstance {
                 break;
             case "ArrowRight":
                 this.move("right");
+                break;
+            case "ArrowDown":
+                this.player.roll();
                 break;
             default:
                 break;

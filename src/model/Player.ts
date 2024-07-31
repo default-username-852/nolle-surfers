@@ -3,11 +3,14 @@ import { Lane } from './Lane';
 const GRAVITY: number = 9.82;
 const JUMP_QUEUE_TIME: number = 0.5; // seconds
 const AIR_RUN_TIME: number = 0.25; // seconds
+const ROLLING_TIME: number = 0.85; // seconds
 
 export enum RunningState {
     OnGround,
     AirBuffer,
     MidAir,
+    Rolling,
+    AirRoll,
 }
 
 export default class Player {
@@ -17,13 +20,14 @@ export default class Player {
     runningState: RunningState = RunningState.OnGround;
     queuedJump: number = 0; // the number of seconds until a queued jump is discarded
     airRunTime: number = 0; // the number of seconds until the fake ground is considered to have run out
+    rollingTime: number = 0; // the number of seconds left for a rolling action
 
     constructor() {}
 
     get onGround() {
-        return this.runningState === RunningState.OnGround || this.runningState === RunningState.AirBuffer;
+        return this.runningState === RunningState.OnGround || this.runningState === RunningState.AirBuffer || this.runningState == RunningState.Rolling;
     }
-    
+
     update(delta: number, groundHeight: number) {
         switch (this.runningState) {
             case RunningState.OnGround:
@@ -51,10 +55,31 @@ export default class Player {
             case RunningState.MidAir:
                 this.height += this.velY * delta;
                 this.velY -= GRAVITY * delta;
-                
+
                 if (this.height <= groundHeight) {
                     this.height = groundHeight;
                     this.runningState = RunningState.OnGround;
+                    this.velY = 0;
+                }
+            break;
+            case RunningState.Rolling:
+                this.rollingTime -= delta;
+                this.height = groundHeight;
+                if(this.rollingTime <= 0) {
+                    this.runningState = RunningState.OnGround;
+                    this.velY = 0;
+                }
+                if(this.velY > 0) {
+                    this.runningState = RunningState.MidAir;
+                    this.height += this.velY * delta;
+                }
+            break;
+            case RunningState.AirRoll:
+                this.height -= 3 * delta;
+                if (this.height <= groundHeight) {
+                    this.height = groundHeight;
+                    this.runningState = RunningState.Rolling;
+                    this.rollingTime = ROLLING_TIME;
                     this.velY = 0;
                 }
             break;
@@ -75,6 +100,22 @@ export default class Player {
             this.airRunTime = 0;
         } else {
             this.queuedJump = JUMP_QUEUE_TIME;
+        }
+    }
+
+    roll() {
+        switch(this.runningState) {
+            case RunningState.OnGround:
+                this.runningState = RunningState.Rolling;
+                this.rollingTime = ROLLING_TIME;
+                break;
+            case RunningState.AirBuffer:
+            case RunningState.MidAir:
+                this.runningState = RunningState.AirRoll;
+                break;
+            case RunningState.Rolling:
+            case RunningState.AirRoll:
+                break; // cannot roll twice, and no queueing either
         }
     }
 }
