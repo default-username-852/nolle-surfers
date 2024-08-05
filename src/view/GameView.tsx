@@ -8,7 +8,7 @@ import { useSnapshot } from 'valtio';
 import { gameState } from '..';
 import { Surroundings } from './Surroundings';
 import { ObstacleView } from './ObstacleView';
-import { PickupView } from './PickupView';
+import { PickupView } from './pickup/PickupView';
 import Music from '../../assets/soundtrack.mp3';
 
 function GGDiv(): React.JSX.Element {

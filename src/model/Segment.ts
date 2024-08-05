@@ -62,6 +62,6 @@ export const SEGMENTS = [
     ),
     new Segment(
         [[], [], []], [[], [], []],
-        [[new Pickup(PickupType.Notes, 1, 10)], [new Pickup(PickupType.Notes, 1, 10)], [new Pickup(PickupType.Notes, 1, 10)]], 20
+        [[new Pickup(PickupType.Pencil, 1, 10)], [new Pickup(PickupType.Notes, 1, 10)], [new Pickup(PickupType.Notes, 1, 10)]], 20
     )
 ];

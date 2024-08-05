@@ -7,6 +7,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import model from "./wagon.glb";
 import { GroupProps, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useGLTF } from "@react-three/drei";
 
 export const Train = React.forwardRef(function Train(props: GroupProps, ref: React.Ref<THREE.Group>): React.JSX.Element {
   const loaded = useLoader(GLTFLoader, model);
@@ -1911,4 +1912,6 @@ export const Train = React.forwardRef(function Train(props: GroupProps, ref: Rea
     />
   </group>
   )
-})
+});
+
+useGLTF.preload(model);
