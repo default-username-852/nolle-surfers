@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 export enum PickupType {
     Notes,
     Pencil,
+    Book,
 }
 
 export class Pickup {
@@ -32,6 +33,8 @@ export class Pickup {
             case PickupType.Notes:
                 return 100;
             case PickupType.Pencil:
+                return 100;
+            case PickupType.Book:
                 return 100;
         }
     }

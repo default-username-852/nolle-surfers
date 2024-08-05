@@ -2,30 +2,42 @@ import * as THREE from "three";
 import * as React from "react";
 import RailTexturue from "./rail.jpg";
 import Skyline from "./skyline.jpg";
+import GroundSideTexture from "./ground.jpg";
 import { MeshProps, useFrame, useLoader } from "@react-three/fiber";
 import { gameState } from "..";
 
 function BottomPlate(): React.JSX.Element {
-    const texture = useLoader(THREE.TextureLoader, RailTexturue) as THREE.Texture;
+    const railTexture = useLoader(THREE.TextureLoader, RailTexturue) as THREE.Texture;
 
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(15,3);
-    texture.rotation = Math.PI / 2;
+    railTexture.wrapS = THREE.RepeatWrapping;
+    railTexture.wrapT = THREE.RepeatWrapping;
+    railTexture.repeat.set(15,3);
+    railTexture.rotation = Math.PI / 2;
+    
+    const sideTextureLeft = useLoader(THREE.TextureLoader, GroundSideTexture) as THREE.Texture;
+    
+    sideTextureLeft.wrapS = THREE.RepeatWrapping;
+    sideTextureLeft.repeat.set(15, 1);
+    sideTextureLeft.center.set(0.5, 0.5);
+    sideTextureLeft.rotation = Math.PI * 3 / 2;
+    
+    const sideTextureRight = sideTextureLeft.clone();
+    
+    sideTextureRight.rotation = Math.PI / 2;
 
     return (
         <>
             <mesh rotation={[Math.PI/2, 0, 0]} position={[0,0,0]}>
                 <planeGeometry args={[9, 50]} />
-                <meshStandardMaterial map={texture} side={THREE.DoubleSide} />
+                <meshStandardMaterial map={railTexture} side={THREE.DoubleSide} />
             </mesh>
             <mesh rotation={[Math.PI/2, 0, 0]} position={[6.5,0,0]}>
                 <planeGeometry args={[4, 50]}/>
-                <meshStandardMaterial color={0x888888} side={THREE.DoubleSide} />
+                <meshStandardMaterial map={sideTextureRight} side={THREE.DoubleSide} />
             </mesh>
             <mesh rotation={[Math.PI/2, 0, 0]} position={[-6.5,0,0]}>
                 <planeGeometry args={[4, 50]}/>
-                <meshStandardMaterial color={0x888888} side={THREE.DoubleSide} />
+                <meshStandardMaterial map={sideTextureLeft} side={THREE.DoubleSide} />
             </mesh>
         </>
     );
