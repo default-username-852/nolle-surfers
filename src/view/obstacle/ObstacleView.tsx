@@ -1,27 +1,20 @@
 import * as React from "react";
-import { Terrain, TerrainType } from "../model/Terrain";
 import * as THREE from "three";
-import MetalTexture from "../../assets/metal.png";
-import { Lane, laneToOffset } from "../model/Lane";
-import { GroupProps, useFrame } from "@react-three/fiber";
-import { gameState } from "..";
-import { ObstacleType } from "../model/Obstacle";
+import MetalTexture from "../../../assets/metal.png";
+import { Lane, laneToOffset } from "../../model/Lane";
+import { useFrame } from "@react-three/fiber";
+import { gameState } from "../..";
+import { ObstacleType } from "../../model/Obstacle";
 import { Shadow } from "@react-three/drei";
+import { ConcreteBlock } from "./ConcreteBlock";
+import { RoadBarrier } from "./RoadBarrier";
+import { RoadBlock } from "./RoadBlock";
 
 const metalTexture = new THREE.TextureLoader().load(MetalTexture);
 
 metalTexture.wrapS = THREE.RepeatWrapping;
 metalTexture.wrapT = THREE.RepeatWrapping;
 metalTexture.repeat.set(1,1);
-
-function Ramp(props: GroupProps): React.JSX.Element {
-    return (<group {...props}>
-        <mesh rotation={[Math.atan(10/4),0,0]}>
-            <meshStandardMaterial map={metalTexture}/>
-            <planeGeometry args={[1.8, Math.sqrt(10*10+4*4)]}/>
-        </mesh>
-    </group>)
-}
 
 export const ObstacleView = function ({lane, obstacleId}: {lane: Lane, obstacleId: string}): React.JSX.Element {
     const meshRef = React.useRef<THREE.Group>(null);
@@ -43,25 +36,16 @@ export const ObstacleView = function ({lane, obstacleId}: {lane: Lane, obstacleI
 
     switch(obstacle.type) {
         case ObstacleType.Under:
-            mesh = (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 2, 0]}>
-                <meshStandardMaterial map={metalTexture}/>
-                <planeGeometry args={[1.8, 2]}/>
-            </mesh>);
+            mesh = <RoadBlock rotation={[0,Math.PI / 2,0]} position={[laneToOffset(lane), 1.5, 0]} scale={[1,1.5,1.2]}/>;
             break;
         case ObstacleType.Over:
-            mesh = (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 0.5, 0]}>
-                <meshStandardMaterial map={metalTexture}/>
-                <planeGeometry args={[1.8, 1]}/>
-            </mesh>);
+            mesh = <ConcreteBlock rotation={[0,Math.PI / 2,0]} position={[laneToOffset(lane), 0.5, 0]}/>;
             break;
         case ObstacleType.WagonStart:
             mesh = <></>;
             break;
         case ObstacleType.Bar:
-            mesh = (<mesh rotation={[Math.PI,0,0]} position={[laneToOffset(lane), 1, 0]}>
-                <meshStandardMaterial map={metalTexture}/>
-                <planeGeometry args={[1.8, 0.1]}/>
-            </mesh>);
+            mesh = <RoadBarrier rotation={[0,0,0]} position={[laneToOffset(lane), 0, 0]}/>;
             break;
     }
 

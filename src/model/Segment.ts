@@ -49,7 +49,7 @@ export const SEGMENTS = [
             new Terrain(TerrainType.Wagon, 15), new Terrain(TerrainType.Wagon, 35), new Terrain(TerrainType.Wagon, 55)
         ]],
         [[], [], []], [[], [], []], 80),
-    /*new Segment(
+    new Segment(
         [[],[],[]],
         [[
             new Obstacle(ObstacleType.Bar, 20)
@@ -68,5 +68,5 @@ export const SEGMENTS = [
             [new Pickup(PickupType.Book, 1, 10)]
         ],
         40
-    )*/
+    )
 ];

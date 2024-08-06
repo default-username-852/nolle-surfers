@@ -7,7 +7,7 @@ import { Lane, laneToOffset } from '../model/Lane';
 import { useSnapshot } from 'valtio';
 import { gameState } from '..';
 import { Surroundings } from './Surroundings';
-import { ObstacleView } from './ObstacleView';
+import { ObstacleView } from './obstacle/ObstacleView';
 import { PickupView } from './pickup/PickupView';
 import Music from '../../assets/soundtrack.mp3';
 
