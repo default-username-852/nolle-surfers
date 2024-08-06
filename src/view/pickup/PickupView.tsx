@@ -10,6 +10,7 @@ import BookModel from "./book.glb";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import BackgroundImage from "./background.png";
+import { Shadow } from "@react-three/drei";
 
 const ROTATION_SPEED: number = 4;
 
@@ -79,7 +80,6 @@ export const PickupView = function({lane, pickupId}: {lane: Lane, pickupId: stri
 
     useFrame((s, delta) => {
         if(groupRef.current) {
-            groupRef.current.position.y = pickup.height;
             groupRef.current.position.z = pickup.offset;
         }
         if(meshRef.current) {
@@ -90,25 +90,26 @@ export const PickupView = function({lane, pickupId}: {lane: Lane, pickupId: stri
     let pickupElement;
     switch(pickup.type) {
         case PickupType.Notes:
-            pickupElement = (<mesh ref={meshRef}>
+            pickupElement = (<mesh position={[0,pickup.height,0]} ref={meshRef}>
                 <meshStandardMaterial color={0xff0000}/>
                 <boxGeometry args={[0.2, 0.2, 0.2]}/>
             </mesh>);
             break;
         case PickupType.Pencil:
-            pickupElement = <Pencil scale={[3,3,3]} rotation={[0,0,Math.PI / 4]} ref={meshRef}/>;
+            pickupElement = <Pencil position={[0,pickup.height,0]} scale={3} rotation={[0,0,Math.PI / 4]} ref={meshRef}/>;
             break;
         case PickupType.Book:
-            pickupElement = <Book scale={0.5} rotation={[0,0,Math.PI / 3.5]} ref={meshRef}/>;
+            pickupElement = <Book position={[0,pickup.height,0]} scale={0.5} rotation={[0,0,Math.PI / 3.5]} ref={meshRef}/>;
             break;
     }
     
     return (
-        <group position={[laneToOffset(lane), 2, 0]} ref={groupRef}>
+        <group position={[laneToOffset(lane), 0, 0]} ref={groupRef}>
             {pickupElement}
-            <sprite position={[0,0,0.5]} scale={[1.5,1.5,1.5]}>
+            <sprite position={[0,pickup.height,0.5]} scale={[1.5,1.5,1.5]}>
                 <spriteMaterial map={circleTextureMap}/>
             </sprite>
+            <Shadow position={[0, 0.01, 0]} scale={1}/>
         </group>
     );
 }
