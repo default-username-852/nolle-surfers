@@ -5,7 +5,7 @@ import { SEGMENTS } from "./Segment";
 import { TerrainManager } from "./TerrainManager";
 import { LOW_OBSTACLE_HEIGHT, ObstacleType } from "./Obstacle";
 
-const INCREASE_SPEED_RATE: number = 0.01;
+const INCREASE_SPEED_RATE: number = 0.05;
 
 export class Game {
     started: boolean = false;
@@ -53,7 +53,7 @@ export class GameInstance {
         if(
             nextPickup &&
             nextPickup.offset - worldOffset < 0
-            && nextPickup.height - 1 >= this.player.height
+            && nextPickup.height + 0.35 >= this.player.height
             && nextPickup.height - 2 <= this.player.height
         ) { // player hits the pickup in this update
             this.terrainManager.removePickup(nextPickup.uuid);

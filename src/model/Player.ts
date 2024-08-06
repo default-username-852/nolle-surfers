@@ -14,7 +14,7 @@ export enum RunningState {
 }
 
 export default class Player {
-    height: number = 0;
+    height: number = 0; // height of the feet
     velY: number = 0;
     lane: Lane = Lane.Center;
     runningState: RunningState = RunningState.OnGround;
