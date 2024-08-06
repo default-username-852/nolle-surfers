@@ -64,6 +64,25 @@ function Roof(props: MeshProps): React.JSX.Element {
     </mesh>)
 }
 
+function Segment({offset}: {offset: number}): React.JSX.Element {
+    const groupRef = React.useRef<THREE.Group>(null);
+    
+    useFrame((s, delta) => {
+        if (groupRef.current) {
+            groupRef.current.position.z = -(gameState.currentInstance.worldOffset + offset) % 150 + 123;
+        }
+    })
+    
+    return (
+        <group ref={groupRef}>
+            <BottomPlate/>
+            <Wall position={[-8.5,5,0]}/>
+            <Wall position={[8.5,5,0]}/>
+            <Roof position={[0,9.99,0]}/>
+        </group>
+    );
+}
+
 export function Surroundings(): React.JSX.Element {
     const groupRef = React.useRef<THREE.Group>(null);
     const groupRef2 = React.useRef<THREE.Group>(null);
@@ -78,17 +97,8 @@ export function Surroundings(): React.JSX.Element {
     });
 
     return (<>
-        <group ref={groupRef}>
-            <BottomPlate/>
-            <Wall position={[-8.5,5,0]}/>
-            <Wall position={[8.5,5,0]}/>
-            <Roof position={[0,9.99,0]}/>
-        </group>
-        <group ref={groupRef2}>
-            <BottomPlate/>
-            <Wall position={[-8.5,5,0]}/>
-            <Wall position={[8.5,5,0]}/>
-            <Roof position={[0,9.99,0]}/>
-        </group>
+        <Segment offset={0}/>
+        <Segment offset={50}/>
+        <Segment offset={100}/>
     </>);
 }

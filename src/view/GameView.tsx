@@ -64,7 +64,7 @@ function IntroductionScreen({ startMusic }: { startMusic: () => void }): React.J
 
 export default function GameView(): React.JSX.Element {
     return (<>
-    <Canvas scene={{background: new THREE.Color(0x000000)}} camera={{position: [0,4,-2.5]}}>
+    <Canvas scene={{background: new THREE.Color(0x77C1E4), fog: new THREE.Fog(0x77C1E4, 1, 100)}} camera={{position: [0,4,-2.5]}}>
         <React.StrictMode>
             <GameInner/>
         </React.StrictMode>
@@ -152,6 +152,7 @@ const GameInner = React.memo((): React.JSX.Element => {
         <ambientLight intensity={Math.PI / 2} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+        <fog color={0x77C1E4}/>
         <Surroundings/>
         <PlayerView/>
         {terrains}
