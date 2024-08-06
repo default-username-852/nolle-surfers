@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import PlayerView from './PlayerView';
-import { TerrainView } from './TerrainView';
+import { TerrainView } from './terrain/TerrainView';
 import { Lane, laneToOffset } from '../model/Lane';
 import { useSnapshot } from 'valtio';
 import { gameState } from '..';
