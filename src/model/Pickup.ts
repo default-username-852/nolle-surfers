@@ -2,7 +2,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 // TODO: add more pickup types
 export enum PickupType {
-    Notes,
+    WaterBottle,
+    Laptop,
     Pencil,
     Book,
 }
@@ -30,12 +31,14 @@ export class Pickup {
 
     points(): number {
         switch (this.type) {
-            case PickupType.Notes:
-                return 100;
+            case PickupType.WaterBottle:
+                return 50;
             case PickupType.Pencil:
-                return 100;
+                return 50;
             case PickupType.Book:
                 return 100;
+            case PickupType.Laptop:
+                return 150;
         }
     }
 }

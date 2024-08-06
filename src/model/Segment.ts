@@ -40,7 +40,7 @@ export class Segment {
 // TODO: add more segments
 // maybe load from json
 export const SEGMENTS = [
-    new Segment(
+    /*new Segment(
         [[
             new Terrain(TerrainType.Wagon, 0), new Terrain(TerrainType.Wagon, 20), new Terrain(TerrainType.Wagon, 40)
         ], [
@@ -59,9 +59,14 @@ export const SEGMENTS = [
             new Obstacle(ObstacleType.Under, 20)
         ]], [[], [], []],
         50
-    ),
+    ),*/
     new Segment(
         [[], [], []], [[], [], []],
-        [[new Pickup(PickupType.Pencil, 1, 10)], [new Pickup(PickupType.Notes, 1, 10)], [new Pickup(PickupType.Book, 1, 10)]], 20
+        [
+            [new Pickup(PickupType.Pencil, 1, 10)], 
+            [new Pickup(PickupType.WaterBottle, 1, 10), new Pickup(PickupType.Laptop, 1, 30)], 
+            [new Pickup(PickupType.Book, 1, 10)]
+        ],
+        40
     )
 ];

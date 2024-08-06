@@ -4,6 +4,14 @@ import { ObjectMap, useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 import { gameState } from "..";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
+/*
+Author: spectrick (https://sketchfab.com/spectrick)
+License: CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+Source: https://sketchfab.com/3d-models/turtle-animation-a150fca214a64c7787a4e4be780b4737
+Title: Turtle-animation
+Used with modifications
+*/
 import Turtle from "./turtle_anim.glb";
 import { useSnapshot } from "valtio";
 import { RunningState } from "../model/Player";
