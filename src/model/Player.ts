@@ -64,12 +64,14 @@ export default class Player {
             break;
             case RunningState.Rolling:
                 this.rollingTime -= delta;
-                this.height = groundHeight;
                 if(this.rollingTime <= 0) {
                     this.runningState = RunningState.OnGround;
                     this.velY = 0;
-                }
-                if(this.velY > 0) {
+                } else if (this.height > groundHeight) { // ground just dissapeared
+                    this.runningState = RunningState.MidAir;
+                    this.velY = 0;
+                    this.rollingTime = 0;
+                } else if(this.velY > 0) {
                     this.runningState = RunningState.MidAir;
                     this.height += this.velY * delta;
                 }

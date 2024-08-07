@@ -32,7 +32,7 @@ export class GameInstance {
     player: Player = new Player();
     terrainManager = new TerrainManager();
     score: number = 0;
-    gameSpeed: number = 5;
+    gameSpeed: number = 7.5;
     generatedFrontier: number = 10; // represents how many units forward has been generated
     worldOffset: number = 0;
     gameOver: boolean = false;
@@ -65,7 +65,7 @@ export class GameInstance {
         if(nextObstacle && nextObstacle.offset - worldOffset < 0) { // player hits the obstacle in this update
             switch(nextObstacle.type) {
                 case ObstacleType.Under:
-                    if (!(this.player.runningState === RunningState.Rolling)) {
+                    if (!(this.player.runningState === RunningState.Rolling) && this.player.height < 4) {
                         this.gameOver = true;
                         return;
                     }
@@ -100,6 +100,10 @@ export class GameInstance {
 
         this.terrainManager.update(worldOffset);
 
+        if(this.generatedFrontier <= -10) {
+            this.generatedFrontier = -10;
+        }
+        
         if(this.generatedFrontier <= 30) {
             this.generateNewSegment();
         }
