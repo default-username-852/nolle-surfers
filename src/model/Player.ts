@@ -71,6 +71,8 @@ export default class Player {
                     this.runningState = RunningState.MidAir;
                     this.velY = 0;
                     this.rollingTime = 0;
+                } else if (this.height < groundHeight) {
+                    this.height = groundHeight;
                 } else if(this.velY > 0) {
                     this.runningState = RunningState.MidAir;
                     this.height += this.velY * delta;

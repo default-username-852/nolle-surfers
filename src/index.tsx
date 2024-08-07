@@ -4,6 +4,7 @@ import GameView from './view/GameView';
 import { Game } from './model/Game';
 import { proxy } from 'valtio';
 import * as Stats from 'stats.js';
+import * as THREE from "three";
 
 let stats = new Stats();
 document.body.appendChild(stats.dom);
@@ -80,6 +81,10 @@ function handleTouchMove(evt: TouchEvent) {
     /* reset values */
     xDown = null;
     yDown = null;
+};
+
+THREE.DefaultLoadingManager.onLoad = () => {
+    gameState.loading = false;
 };
 
 let lastTime = 0;

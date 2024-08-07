@@ -62,15 +62,54 @@ function IntroductionScreen({ startMusic }: { startMusic: () => void }): React.J
     </>;
 }
 
+function Loading(): React.JSX.Element {
+    const [dots, setDots] = React.useState(1);
+    
+    React.useEffect(() => {
+        const i = setInterval(() => {
+            setDots(dots % 3 + 1);
+        }, 1000);
+        return () => {
+            clearInterval(i);
+        }
+    });
+    
+    let string = "Laddar";
+    
+    for(let i = 0; i < dots; ++i) {
+        string += ".";
+    }
+    
+    return (
+        <div style={{position: "absolute", left: 0, top: 0, width: "100%", height: "100%",
+                fontFamily: "monospace", backgroundColor:"#32956a", color: "white",
+                fontSize: "1.5em"}}>
+            <h1 style={{
+                margin: "auto",
+                position: "relative",
+                textAlign: "center",
+                top: "50%",
+                transform: "translate(0,-50%)"
+            }}>
+                {string}
+            </h1>
+        </div>
+    );
+}
+
 export default function GameView(): React.JSX.Element {
-    return (<>
-    <Canvas scene={{background: new THREE.Color(0x77C1E4), fog: new THREE.Fog(0x77C1E4, 1, 100)}} camera={{position: [0,4,-2.5]}}>
-        <React.StrictMode>
-            <GameInner/>
-        </React.StrictMode>
-    </Canvas>
-    <GameOverlay/>
-    </>)
+    if (useSnapshot(gameState).loading) {
+        return <Loading/>;
+    } else {
+        return (<>
+            <Canvas scene={{background: new THREE.Color(0x77C1E4), fog: new THREE.Fog(0x77C1E4, 1, 100)}} camera={{position: [0,4,-2.5]}}>
+                <React.StrictMode>
+                    <GameInner/>
+                </React.StrictMode>
+            </Canvas>
+            <GameOverlay/>
+        </>);
+    }
 }
 
 function GameOverlay(): React.JSX.Element {

@@ -11,6 +11,7 @@ export class Game {
     started: boolean = false;
     currentInstance: GameInstance = new GameInstance();
     bestScore: number | undefined = undefined;
+    loading: boolean = true;
 
     restartGame() {
         this.bestScore = Math.max(this.currentInstance.score, this.bestScore || 0);
