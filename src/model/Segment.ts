@@ -37,7 +37,30 @@ export class Segment {
     }
 }
 
-// TODO: add more segments
+function curryTerrain(type: TerrainType): (offset: number) => Terrain {
+    return (offset) => new Terrain(type, offset);
+}
+
+const ramp = curryTerrain(TerrainType.Ramp);
+const wagon = curryTerrain(TerrainType.Wagon);
+
+function curryObstacle(type: ObstacleType): (offset: number) => Obstacle {
+    return (offset) => new Obstacle(type, offset);
+}
+
+const bar = curryObstacle(ObstacleType.Bar);
+const under = curryObstacle(ObstacleType.Under);
+const over = curryObstacle(ObstacleType.Over);
+
+function curryPickup(type: PickupType): (height: number, offset: number) => Pickup {
+    return (h, o) => new Pickup(type, h, o);
+}
+
+const laptop = curryPickup(PickupType.Laptop);
+const book = curryPickup(PickupType.Book);
+const pencil = curryPickup(PickupType.Pencil);
+const waterBottle = curryPickup(PickupType.WaterBottle);
+
 // maybe load from json
 export const SEGMENTS = [
     new Segment(
@@ -88,25 +111,19 @@ export const SEGMENTS = [
         [[ ], [   ], [new Terrain(TerrainType.Ramp, 5),new Terrain(TerrainType.Wagon, 15)]],
         [[new Obstacle(ObstacleType.Under, 10)], [new Obstacle(ObstacleType.Over, 10),new Obstacle(ObstacleType.Bar, 20)], []],  
         [[new Pickup(PickupType.Laptop, 1, 5),new Pickup(PickupType.Book, 1, 20)],[new Pickup(PickupType.WaterBottle, 1, 18)], [new Pickup(PickupType.WaterBottle, 5, 20)]], 35),
-    
-        //new Segment(
-    //    [[],[],[]],
-    //    [[
-    //        new Obstacle(ObstacleType.Bar, 20)
-    //    ], [
-    //        new Obstacle(ObstacleType.Over, 20)
-    //    ], [
-    //        new Obstacle(ObstacleType.Under, 20)
-    //    ]], [[], [], []],
-    //    40
-    //),
-    //new Segment(
-    //    [[], [], []], [[], [], []],
-    //    [
-    //        [new Pickup(PickupType.Pencil, 1, 10)], 
-    //        [new Pickup(PickupType.WaterBottle, 1, 10), new Pickup(PickupType.Laptop, 1, 30)], 
-    //        [new Pickup(PickupType.Book, 1, 10)]
-    //    ],
-    //    40
-    //)
+    new Segment([
+            [wagon(0), wagon(45)],
+            [wagon(15), wagon(25)],
+            [wagon(0), wagon(45)]
+        ],
+        [[over(30)],[],[under(25)]],
+        [[],[laptop(1, 40)],[]], 
+        55
+    ),
+    new Segment(
+        [[],[],[]],
+        [[under(10), over(25)],[bar(10), over(25)],[]],
+        [[],[pencil(3,10)],[]], 
+        30
+    ),
 ];

@@ -79,7 +79,7 @@ export default class Player {
                 }
             break;
             case RunningState.AirRoll:
-                this.height -= 3 * delta;
+                this.height -= 5 * delta;
                 if (this.height <= groundHeight) {
                     this.height = groundHeight;
                     this.runningState = RunningState.Rolling;
