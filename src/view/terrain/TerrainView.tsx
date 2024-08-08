@@ -68,7 +68,7 @@ export const TerrainView = React.memo(({lane, terrainId}: {lane: Lane, terrainId
 
     if ( terrain.type == TerrainType.Wagon) {
         mesh = (
-            <Train position={[laneToOffset(lane), 0, 0]}/>
+            <Train position={[laneToOffset(lane), 0, 0]} rotation={[0,Math.PI,0]} scale={[1,1,1.03]}/>
         );
     } else if (terrain.type == TerrainType.Ramp) {
         mesh = (

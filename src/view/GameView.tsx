@@ -20,7 +20,6 @@ export default function GameView(): React.JSX.Element {
             <Canvas scene={{background: new THREE.Color(0x77C1E4), fog: new THREE.Fog(0x77C1E4, 1, 100)}} camera={{position: [0,4,-2.5]}}>
                 <React.StrictMode>
                     <GameInner/>
-                    <Perf/>
                 </React.StrictMode>
             </Canvas>
             <GameOverlay/>

@@ -3,15 +3,7 @@ import * as React from 'react';
 import GameView from './view/GameView';
 import { Game } from './model/Game';
 import { proxy } from 'valtio';
-import * as Stats from 'stats.js';
 import * as THREE from "three";
-
-let stats = new Stats();
-document.body.appendChild(stats.dom);
-requestAnimationFrame(function loop() {
-	stats.update();
-	requestAnimationFrame(loop);
-});
 
 export const gameState = proxy(new Game());
 

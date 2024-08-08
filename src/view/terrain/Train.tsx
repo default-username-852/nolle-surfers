@@ -25,23 +25,25 @@ type GLTFResult = GLTF & {
     Train_13: THREE.Mesh
     Train_14: THREE.Mesh
     Train_15: THREE.Mesh
+    Train_16: THREE.Mesh
   }
   materials: {
+    ['[Color_000]']: THREE.MeshStandardMaterial
     ['[Color_F21]']: THREE.MeshStandardMaterial
+    ['[Color_F13]']: THREE.MeshStandardMaterial
+    Material: THREE.MeshStandardMaterial
+    ['[Translucent_Glass_Gray]']: THREE.MeshStandardMaterial
+    ['[Color_008]']: THREE.MeshStandardMaterial
+    ['[Color_007]']: THREE.MeshStandardMaterial
+    ['[Color_003]']: THREE.MeshStandardMaterial
     ['Air intake']: THREE.MeshStandardMaterial
     ['[Color_006]']: THREE.MeshStandardMaterial
-    ['[Color_F13]']: THREE.MeshStandardMaterial
-    ['[Color_008]']: THREE.MeshStandardMaterial
-    ['[Fencing_Mesh_Blue]']: THREE.MeshStandardMaterial
-    ['[Color_000]']: THREE.MeshStandardMaterial
-    ['[Color_003]']: THREE.MeshStandardMaterial
-    ['[Color_007]']: THREE.MeshStandardMaterial
     ['[Color_009]']: THREE.MeshStandardMaterial
-    ['[Translucent_Glass_Gray]']: THREE.MeshStandardMaterial
-    ['Material.001']: THREE.MeshStandardMaterial
-    ['[Color_001]']: THREE.MeshStandardMaterial
-    ['[Color_A11]']: THREE.MeshStandardMaterial
     ['[Color_E04]']: THREE.MeshStandardMaterial
+    ['[Fencing_Mesh_Blue]']: THREE.MeshStandardMaterial
+    ['[Color_A11]']: THREE.MeshStandardMaterial
+    ['[Color_001]']: THREE.MeshStandardMaterial
+    ['[Color_D01]']: THREE.MeshStandardMaterial
   }
 }
 
@@ -49,22 +51,23 @@ export function Train(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF(model) as GLTFResult
   return (
     <group {...props} dispose={null}>
-      <group position={[0.596, 3.658, -9.127]} rotation={[-Math.PI, 0, -Math.PI]} scale={1.027}>
-        <mesh geometry={nodes.Train_1.geometry} material={materials['[Color_F21]']} />
-        <mesh geometry={nodes.Train_2.geometry} material={materials['Air intake']} />
-        <mesh geometry={nodes.Train_3.geometry} material={materials['[Color_006]']} />
-        <mesh geometry={nodes.Train_4.geometry} material={materials['[Color_F13]']} />
-        <mesh geometry={nodes.Train_5.geometry} material={materials['[Color_008]']} />
-        <mesh geometry={nodes.Train_6.geometry} material={materials['[Fencing_Mesh_Blue]']} />
-        <mesh geometry={nodes.Train_7.geometry} material={materials['[Color_000]']} />
+      <group position={[-1.303, 0.781, 9.374]}>
+        <mesh geometry={nodes.Train_1.geometry} material={materials['[Color_000]']} />
+        <mesh geometry={nodes.Train_2.geometry} material={materials['[Color_F21]']} />
+        <mesh geometry={nodes.Train_3.geometry} material={materials['[Color_F13]']} />
+        <mesh geometry={nodes.Train_4.geometry} material={materials.Material} />
+        <mesh geometry={nodes.Train_5.geometry} material={materials['[Translucent_Glass_Gray]']} />
+        <mesh geometry={nodes.Train_6.geometry} material={materials['[Color_008]']} />
+        <mesh geometry={nodes.Train_7.geometry} material={materials['[Color_007]']} />
         <mesh geometry={nodes.Train_8.geometry} material={materials['[Color_003]']} />
-        <mesh geometry={nodes.Train_9.geometry} material={materials['[Color_007]']} />
-        <mesh geometry={nodes.Train_10.geometry} material={materials['[Color_009]']} />
-        <mesh geometry={nodes.Train_11.geometry} material={materials['[Translucent_Glass_Gray]']} />
-        <mesh geometry={nodes.Train_12.geometry} material={materials['Material.001']} />
-        <mesh geometry={nodes.Train_13.geometry} material={materials['[Color_001]']} />
+        <mesh geometry={nodes.Train_9.geometry} material={materials['Air intake']} />
+        <mesh geometry={nodes.Train_10.geometry} material={materials['[Color_006]']} />
+        <mesh geometry={nodes.Train_11.geometry} material={materials['[Color_009]']} />
+        <mesh geometry={nodes.Train_12.geometry} material={materials['[Color_E04]']} />
+        <mesh geometry={nodes.Train_13.geometry} material={materials['[Fencing_Mesh_Blue]']} />
         <mesh geometry={nodes.Train_14.geometry} material={materials['[Color_A11]']} />
-        <mesh geometry={nodes.Train_15.geometry} material={materials['[Color_E04]']} />
+        <mesh geometry={nodes.Train_15.geometry} material={materials['[Color_001]']} />
+        <mesh geometry={nodes.Train_16.geometry} material={materials['[Color_D01]']} />
       </group>
     </group>
   )
