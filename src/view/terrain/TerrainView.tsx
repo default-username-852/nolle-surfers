@@ -6,7 +6,7 @@ import { Lane, laneToOffset } from "../../model/Lane";
 import { useFrame } from "@react-three/fiber";
 import { Train } from "./Train";
 import { gameState } from "../..";
-import { Shadow } from "@react-three/drei";
+import { Shadow, ShadowType } from "@react-three/drei";
 import { useGLTF } from '@react-three/drei';
 import RampModel from "./ramp_stylized.glb";
 
@@ -46,6 +46,7 @@ useGLTF.preload(RampModel);
 
 export const TerrainView = React.memo(({lane, terrainId}: {lane: Lane, terrainId: string}): React.JSX.Element => {
     const meshRef = React.useRef<THREE.Group>(null);
+    const shadowRef = React.useRef<ShadowType>(null);
     const terrain = gameState.currentInstance.terrainManager.terrainById(terrainId);
 
     if(!terrain) {
@@ -57,7 +58,9 @@ export const TerrainView = React.memo(({lane, terrainId}: {lane: Lane, terrainId
         if(meshRef.current) {
             const [lower, upper] = terrain.bounds();
             meshRef.current.position.z = (lower + upper) / 2;
-            meshRef.current.visible = terrain.offset <= 40;
+        }
+        if(shadowRef.current) {
+            shadowRef.current.visible = terrain.offset <= 75;
         }
     });
 
@@ -75,7 +78,7 @@ export const TerrainView = React.memo(({lane, terrainId}: {lane: Lane, terrainId
 
     return (<group ref={meshRef}>
         {mesh}
-        <Shadow position={[laneToOffset(lane), 0.01, 0]} scale={[3.5, 15, 1]} opacity={0.9}/>
+        <Shadow position={[laneToOffset(lane), 0.01, 0]} scale={[3.5, 15, 1]} opacity={0.9} ref={shadowRef}/>
     </group>)
 }, (t1, t2) => {
     return t1.lane === t2.lane;

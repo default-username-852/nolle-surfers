@@ -41,6 +41,12 @@ export class GameInstance {
     constructor () {}
 
     update(delta: number) {
+        if (delta >= 1) { 
+            // ensure that long deltas don't happen
+            // to combat lag
+            return;
+        }
+        
         if (this.gameOver) {
             return;
         }
@@ -105,7 +111,7 @@ export class GameInstance {
             this.generatedFrontier = -10;
         }
         
-        if(this.generatedFrontier <= 30) {
+        if(this.generatedFrontier <= 120) {
             this.generateNewSegment();
         }
 

@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as THREE from "three";
-import MetalTexture from "../../../assets/metal.png";
 import { Lane, laneToOffset } from "../../model/Lane";
 import { useFrame } from "@react-three/fiber";
 import { gameState } from "../..";
@@ -9,12 +8,6 @@ import { Shadow } from "@react-three/drei";
 import { ConcreteBlock } from "./ConcreteBlock";
 import { RoadBarrier } from "./RoadBarrier";
 import { RoadBlock } from "./RoadBlock";
-
-const metalTexture = new THREE.TextureLoader().load(MetalTexture);
-
-metalTexture.wrapS = THREE.RepeatWrapping;
-metalTexture.wrapT = THREE.RepeatWrapping;
-metalTexture.repeat.set(1,1);
 
 export const ObstacleView = function ({lane, obstacleId}: {lane: Lane, obstacleId: string}): React.JSX.Element {
     const meshRef = React.useRef<THREE.Group>(null);
@@ -28,7 +21,6 @@ export const ObstacleView = function ({lane, obstacleId}: {lane: Lane, obstacleI
     useFrame((s, delta) => {
         if(meshRef.current) {
             meshRef.current.position.z = obstacle.offset;
-            meshRef.current.visible = obstacle.offset <= 40;
         }
     });
 
