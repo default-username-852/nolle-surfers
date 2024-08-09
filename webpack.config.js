@@ -24,6 +24,7 @@ function foo(env, argv) {
         //template: '"!!html-loader!src/index.html",',
         title: 'Nolle-Surfers',
         template: 'src/index.html',
+        favicon: 'assets/icon.png',
       }),
     ],
     resolve: {
