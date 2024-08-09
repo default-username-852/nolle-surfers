@@ -9,7 +9,6 @@ import { gameState } from '..';
 import { Surroundings } from './Surroundings';
 import { ObstacleView } from './obstacle/ObstacleView';
 import { PickupView } from './pickup/PickupView';
-import { Perf } from 'r3f-perf';
 import { GameOverlay, Loading } from './Overlay';
 
 export default function GameView(): React.JSX.Element {
