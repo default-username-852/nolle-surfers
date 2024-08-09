@@ -65,65 +65,65 @@ const waterBottle = curryPickup(PickupType.WaterBottle);
 export const SEGMENTS = [
     new Segment(
         [[
-            new Terrain(TerrainType.Wagon, 0), new Terrain(TerrainType.Wagon, 20), new Terrain(TerrainType.Wagon, 40)
+            wagon(0), wagon(20), wagon(40)
         ], [
-            new Terrain(TerrainType.Ramp, 0), new Terrain(TerrainType.Wagon, 10)
+            ramp(0), wagon(10)
         ], [
-            new Terrain(TerrainType.Wagon, 15), new Terrain(TerrainType.Wagon, 35), new Terrain(TerrainType.Wagon, 55)
+            wagon(15), wagon(35), wagon(55)
         ]],
-        [[new Obstacle(ObstacleType.Under, 75)], [new Obstacle(ObstacleType.Over,40)], []], [[new Pickup(PickupType.Pencil, 5, 11)], [new Pickup(PickupType.Laptop, 1, 45)], [new Pickup(PickupType.WaterBottle, 1, 10)]], 80),
-    
+        [[under(75)], [over(40)], []], [[pencil(5, 11)], [laptop(1, 45)], [waterBottle(1, 10)]], 80),
+
      new Segment(
         [[
-            new Terrain(TerrainType.Wagon, 0), new Terrain(TerrainType.Wagon, 20), 
+            wagon(0), wagon(20),
         ], [
-            new Terrain(TerrainType.Wagon, 0), 
+            wagon(0),
         ], [
-            new Terrain(TerrainType.Ramp, 10), new Terrain(TerrainType.Wagon, 20), 
+            ramp(10), wagon(20),
         ]],
-        [[], [new Obstacle(ObstacleType.Bar, 20), new Obstacle(ObstacleType.Bar, 30)], []], [[new Pickup(PickupType.Book, 5, 10)], [], [new Pickup(PickupType.WaterBottle, 5, 20)]], 40),
-    
-    new Segment(
-        [[
-            
-        ], [
-            new Terrain(TerrainType.Wagon, 5), new Terrain(TerrainType.Wagon, 15)
-        ], [
-            new Terrain(TerrainType.Ramp, 5), new Terrain(TerrainType.Wagon, 15), new Terrain(TerrainType.Wagon, 25)
-        ]],
-        [[new Obstacle(ObstacleType.Under, 10),new Obstacle(ObstacleType.Over, 20)], [], []], [[new Pickup(PickupType.Laptop, 1, 12),new Pickup(PickupType.Book, 1,25)], [], [new Pickup(PickupType.WaterBottle, 5, 18)]], 40),
-    
+        [[], [bar(20), bar(30)], []], [[book(5, 10)], [], [waterBottle(5, 20)]], 40),
 
     new Segment(
-        [[new Terrain(TerrainType.Wagon, 5)], [ ], []],
-        [[new Obstacle(ObstacleType.Bar, 15),new Obstacle(ObstacleType.Bar, 30)], [new Obstacle(ObstacleType.Over, 10), new Obstacle(ObstacleType.Bar, 20), new Obstacle(ObstacleType.Over, 30)], [new Obstacle(ObstacleType.Over, 15)]], 
-        [[new Pickup(PickupType.Pencil, 1, 1),new Pickup(PickupType.WaterBottle, 1,35)], [], [new Pickup(PickupType.WaterBottle, 1, 25)]], 45),
-    
-    new Segment(
-        [[ ], [ new Terrain(TerrainType.Wagon, 30)
+        [[
+
         ], [
-            new Terrain(TerrainType.Ramp, 5),new Terrain(TerrainType.Wagon, 15),new Terrain(TerrainType.Wagon, 25)]],
-        [[new Obstacle(ObstacleType.Bar, 10)], [new Obstacle(ObstacleType.Over, 20)], []], 
-        
-        [[new Pickup(PickupType.Book, 1,20)],[new Pickup(PickupType.Laptop, 1,5)], [new Pickup(PickupType.WaterBottle, 5,20), new Pickup(PickupType.Pencil, 5,28)]], 40),
-    
+            wagon(5), wagon(25)
+        ], [
+            ramp(5), wagon(15)
+        ]],
+        [[under(10),over(20)], [], []], [[laptop(1, 12),book(1, 25)], [], [waterBottle(5, 18)]], 45),
+
+
     new Segment(
-        [[ ], [   ], [new Terrain(TerrainType.Ramp, 5),new Terrain(TerrainType.Wagon, 15)]],
-        [[new Obstacle(ObstacleType.Under, 10)], [new Obstacle(ObstacleType.Over, 10),new Obstacle(ObstacleType.Bar, 20)], []],  
-        [[new Pickup(PickupType.Laptop, 1, 5),new Pickup(PickupType.Book, 1, 20)],[new Pickup(PickupType.WaterBottle, 1, 18)], [new Pickup(PickupType.WaterBottle, 5, 20)]], 35),
+        [[wagon(5)], [ ], []],
+        [[bar(15),bar(30)], [over(10), bar(20), over(30)], [over(15)]],
+        [[pencil(1, 1),waterBottle(1, 35)], [], [waterBottle(1, 25)]], 45),
+
+    new Segment(
+        [[ ], [ wagon(30)
+        ], [
+            ramp(5),wagon(15)]],
+        [[bar(10)], [over(20)], []],
+
+        [[book(1, 20)],[laptop(1, 5)], [waterBottle(5, 20), pencil(5, 28)]], 50),
+
+    new Segment(
+        [[ ], [   ], [ramp(5),wagon(15)]],
+        [[under(10)], [over(10),bar(20)], []],
+        [[laptop(1, 5),book(1, 20)],[waterBottle(1, 18)], [waterBottle(5, 20)]], 35),
     new Segment([
             [wagon(0), wagon(45)],
-            [wagon(15), wagon(25)],
+            [wagon(15), wagon(35)],
             [wagon(0), wagon(45)]
         ],
         [[over(30)],[],[under(25)]],
-        [[],[laptop(1, 40)],[]], 
-        55
+        [[],[laptop(1, 60)],[]],
+        65
     ),
     new Segment(
         [[],[],[]],
         [[under(10), over(25)],[bar(10), over(25)],[]],
-        [[],[pencil(3,10)],[]], 
+        [[],[pencil(3,10)],[]],
         30
     ),
 ];
