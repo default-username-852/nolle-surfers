@@ -33,9 +33,9 @@ const Pencil = React.forwardRef(function(props: JSX.IntrinsicElements['group'], 
             ['pencil.002']: THREE.MeshStandardMaterial
         }
     }
-    
+
     const { nodes, materials } = useGLTF(PencilModel) as GLTFResult;
-    
+
     return (
         <group {...props} dispose={null} ref={ref}>
             <mesh
@@ -117,7 +117,7 @@ const Laptop = React.forwardRef(function (props: JSX.IntrinsicElements['group'],
         </group>
     );
 });
-  
+
 useGLTF.preload(LaptopModel);
 
 /*
@@ -126,21 +126,23 @@ Author: rollthebryce (https://sketchfab.com/rollthebryce)
 License: CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 Source: https://sketchfab.com/3d-models/sport-water-bottle-e896a110ba8f4262943b1a343ed2287e
 Title: Sport Water Bottle
+Used with modifications
 */
-  
+
 const WaterBottle = React.forwardRef(function(props: JSX.IntrinsicElements['group'], ref: React.Ref<THREE.Group>) {
     type GLTFResult = GLTF & {
         nodes: {
-        pCylinder1_lambert1_0: THREE.Mesh
-        pCylinder2_lambert1_0: THREE.Mesh
+            pCylinder1_lambert1_0: THREE.Mesh
+            pCylinder2_lambert1_0: THREE.Mesh
         }
         materials: {
-        lambert1: THREE.MeshStandardMaterial
+            lambert1: THREE.MeshStandardMaterial
+            ['lambert1.001']: THREE.MeshStandardMaterial
         }
     }
-    
+
     const { nodes, materials } = useGLTF(WaterBottleModel) as GLTFResult;
-    
+
     return (
         <group {...props} dispose={null} ref={ref}>
             <mesh
@@ -150,7 +152,7 @@ const WaterBottle = React.forwardRef(function(props: JSX.IntrinsicElements['grou
                 scale={[1, 3.744, 1]}/>
             <mesh
                 geometry={nodes.pCylinder2_lambert1_0.geometry}
-                material={materials.lambert1}
+                material={materials['lambert1.001']}
                 position={[0, 4.419, 0]}
                 scale={[1.209, 0.344, 1.209]}/>
         </group>
@@ -178,7 +180,7 @@ export const PickupView = function({lane, pickupId}: {lane: Lane, pickupId: stri
             meshRef.current.rotateOnWorldAxis(new THREE.Vector3(0,1,0),delta*ROTATION_SPEED);
         }
     });
-    
+
     let pickupElement;
     switch(pickup.type) {
         case PickupType.WaterBottle:
@@ -194,7 +196,7 @@ export const PickupView = function({lane, pickupId}: {lane: Lane, pickupId: stri
             pickupElement = <Laptop position={[0,pickup.height-0.2,0]} scale={0.75} rotation={[0,0,0]} ref={meshRef}/>;
             break;
     }
-    
+
     return (
         <group position={[laneToOffset(lane), 0, 0]} ref={groupRef}>
             {pickupElement}
