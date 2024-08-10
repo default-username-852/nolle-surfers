@@ -113,7 +113,7 @@ export const SEGMENTS = [
         [[laptop(1, 5),book(1, 20)],[waterBottle(1, 18)], [waterBottle(5, 20)]], 35),
     new Segment([
             [wagon(0), wagon(45)],
-            [wagon(15), wagon(35)],
+            [ramp(5), wagon(15), wagon(35)],
             [wagon(0), wagon(45)]
         ],
         [[over(30)],[],[under(25)]],
