@@ -22,7 +22,7 @@ function foo(env, argv) {
     plugins: [
       new HtmlWebpackPlugin({
         //template: '"!!html-loader!src/index.html",',
-        title: 'Nolle-Surfers',
+        title: 'nØlle-surfers',
         template: 'src/index.html',
         favicon: 'assets/icon.png',
       }),

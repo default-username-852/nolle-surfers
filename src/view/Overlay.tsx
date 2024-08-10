@@ -33,7 +33,7 @@ function IntroductionScreen({ startMusic }: { startMusic: () => void }): React.J
                 position: "relative",
                 width: "min(80%, 50em)",
             }}>
-                <h1 style={{textAlign: "center"}}>NØlle-surfers</h1>
+                <h1 style={{textAlign: "center"}}>nØlle-surfers</h1>
                 <p>
                     Å nej! Kjelly är sen till föreläsningen. Hjälp hen springa dit!
                     Föhseriet har dock försökt hindra hen så de har placerat
